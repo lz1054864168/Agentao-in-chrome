@@ -1,0 +1,3610 @@
+/* sidepanel.css
+
+
+
+
+
+ *
+
+
+
+
+
+ * Agentao in Chrome 侧边栏样式。支持 light / dark 主题（通过 data-theme 属性切换）。
+
+
+
+
+
+ * 参考 claw-in-chrome 的视觉风格，但使用可读的 CSS 变量而非混淆产物。
+
+
+
+
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+:root {
+
+
+
+
+
+  --aic-bg: #ffffff;
+
+
+
+
+
+  --aic-bg-secondary: #f5f5f7;
+
+
+
+
+
+  --aic-bg-tertiary: #ebebef;
+
+
+
+
+
+  --aic-text: #1a1a2e;
+
+
+
+
+
+  --aic-text-secondary: #6b6b7e;
+
+
+
+
+
+  --aic-text-muted: #9a9aae;
+
+
+
+
+
+  --aic-border: #e0e0e6;
+
+
+
+
+
+  --aic-accent: #4e8df5;
+
+
+
+
+
+  --aic-accent-hover: #3a7be0;
+
+
+
+
+
+  --aic-accent-light: #e8f0fe;
+
+
+
+
+
+  --aic-danger: #e5484d;
+
+
+
+
+
+  --aic-danger-hover: #c93a3f;
+
+
+
+
+
+  --aic-success: #30a46c;
+
+
+
+
+
+  --aic-warning: #f5a623;
+
+
+
+
+
+  --aic-radius: 8px;
+
+
+
+
+
+  --aic-radius-sm: 4px;
+
+
+
+
+
+  --aic-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+
+
+
+
+
+    Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+
+
+
+
+  --aic-font-mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New",
+
+
+
+
+
+    monospace;
+
+
+
+
+
+  --aic-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+
+
+
+
+  --aic-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+[data-theme="dark"] {
+
+
+
+
+
+  --aic-bg: #16213e;
+
+
+
+
+
+  --aic-bg-secondary: #1a1a2e;
+
+
+
+
+
+  --aic-bg-tertiary: #232342;
+
+
+
+
+
+  --aic-text: #e4e4ef;
+
+
+
+
+
+  --aic-text-secondary: #a0a0b8;
+
+
+
+
+
+  --aic-text-muted: #6b6b7e;
+
+
+
+
+
+  --aic-border: #2a2a4a;
+
+
+
+
+
+  --aic-accent: #5b9bf5;
+
+
+
+
+
+  --aic-accent-hover: #7ab0f7;
+
+
+
+
+
+  --aic-accent-light: #1e2d4a;
+
+
+
+
+
+  --aic-danger: #ff6b6b;
+
+
+
+
+
+  --aic-danger-hover: #ff5252;
+
+
+
+
+
+  --aic-success: #4ade80;
+
+
+
+
+
+  --aic-warning: #fbbf24;
+
+
+
+
+
+  --aic-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+
+
+
+
+  --aic-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+* {
+
+
+
+
+
+  margin: 0;
+
+
+
+
+
+  padding: 0;
+
+
+
+
+
+  box-sizing: border-box;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+html,
+
+
+
+
+
+body {
+
+
+
+
+
+  height: 100%;
+
+
+
+
+
+  overflow: hidden;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+body {
+
+
+
+
+
+  font-family: var(--aic-font);
+
+
+
+
+
+  font-size: 14px;
+
+
+
+
+
+  line-height: 1.5;
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+  background: var(--aic-bg);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-app {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  flex-direction: column;
+
+
+
+
+
+  height: 100vh;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ── Header ─────────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
+
+
+.agentao-header {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  align-items: center;
+
+
+
+
+
+  justify-content: space-between;
+
+
+
+
+
+  padding: 10px 16px;
+
+
+
+
+
+  border-bottom: 1px solid var(--aic-border);
+
+
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+
+
+  flex-shrink: 0;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-header-title {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  align-items: center;
+
+
+
+
+
+  gap: 8px;
+
+
+
+
+
+  font-weight: 600;
+
+
+
+
+
+  font-size: 15px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-logo {
+
+
+
+
+
+  display: inline-flex;
+
+
+
+
+
+  align-items: center;
+
+
+
+
+
+  justify-content: center;
+
+
+
+
+
+  width: 24px;
+
+
+
+
+
+  height: 24px;
+
+
+
+
+
+  border-radius: 50%;
+
+
+
+
+
+  background: linear-gradient(135deg, var(--aic-accent), #7c5cf5);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  font-weight: 700;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-status {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  align-items: center;
+
+
+
+
+
+  gap: 6px;
+
+
+
+
+
+  font-size: 12px;
+
+
+
+
+
+  color: var(--aic-text-secondary);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-status-dot {
+
+
+
+
+
+  width: 8px;
+
+
+
+
+
+  height: 8px;
+
+
+
+
+
+  border-radius: 50%;
+
+
+
+
+
+  background: var(--aic-text-muted);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-status--connected .agentao-status-dot {
+
+
+
+
+
+  background: var(--aic-success);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-status--connecting .agentao-status-dot {
+
+
+
+
+
+  background: var(--aic-warning);
+
+
+
+
+
+  animation: aic-pulse 1.5s ease-in-out infinite;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-status--disconnected .agentao-status-dot {
+
+
+  background: var(--aic-danger);
+
+
+}
+
+
+
+
+
+
+.agentao-status--llm_error .agentao-status-dot {
+  background: var(--aic-warning);
+  animation: aic-pulse 1.5s ease-in-out infinite;
+}
+
+.agentao-header-actions {
+
+
+  display: flex;
+
+
+  align-items: center;
+
+
+  gap: 10px;
+
+
+}
+
+
+
+
+
+.agentao-icon-btn {
+
+
+  display: inline-flex;
+
+
+  align-items: center;
+
+
+  justify-content: center;
+
+
+  width: 28px;
+
+
+  height: 28px;
+
+
+  padding: 0;
+
+
+  border: none;
+
+
+  border-radius: 6px;
+
+
+  background: transparent;
+
+
+  color: var(--aic-text-secondary);
+
+
+  cursor: pointer;
+
+
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+
+}
+
+
+
+
+
+.agentao-icon-btn:hover {
+
+
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.06));
+
+
+  color: var(--aic-text-primary);
+
+
+}
+
+
+
+
+
+.agentao-icon-btn:focus-visible {
+
+
+  outline: 2px solid var(--aic-accent);
+
+
+  outline-offset: 1px;
+
+
+}
+
+
+
+
+
+/* ── Setup banner ───────────────────────────────────────── */
+
+
+
+
+
+.agentao-setup-banner {
+
+
+  flex-shrink: 0;
+
+
+  padding: 14px 16px;
+
+
+  border-bottom: 1px solid var(--aic-border);
+
+
+  background: var(--aic-bg-secondary);
+
+
+}
+
+
+
+
+
+.agentao-setup-banner--hidden {
+
+
+  display: none;
+
+
+}
+
+
+
+
+
+.agentao-setup-banner-body {
+
+
+  display: flex;
+
+
+  flex-direction: column;
+
+
+  gap: 8px;
+
+
+  align-items: flex-start;
+
+
+}
+
+
+
+
+
+.agentao-setup-banner-title {
+
+
+  font-size: 13px;
+
+
+  font-weight: 600;
+
+
+  color: var(--aic-text-primary);
+
+
+}
+
+
+
+
+
+.agentao-setup-banner-hint {
+
+
+  font-size: 12px;
+
+
+  color: var(--aic-text-secondary);
+
+
+  line-height: 1.5;
+
+
+}
+
+
+
+
+
+.agentao-setup-banner .agentao-btn--send {
+
+
+  align-self: flex-start;
+
+
+  padding: 6px 14px;
+
+
+  font-size: 12px;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+@keyframes aic-pulse {
+
+
+
+
+
+  0%,
+
+
+
+
+
+  100% {
+
+
+
+
+
+    opacity: 1;
+
+
+
+
+
+  }
+
+
+
+
+
+  50% {
+
+
+
+
+
+    opacity: 0.4;
+
+
+
+
+
+  }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ── Messages ───────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
+
+
+.agentao-messages {
+
+
+
+
+
+  flex: 1;
+
+
+
+
+
+  overflow-y: auto;
+
+
+
+
+
+  padding: 16px;
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  flex-direction: column;
+
+
+
+
+
+  gap: 12px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-empty {
+
+
+
+
+
+  color: var(--aic-text-muted);
+
+
+
+
+
+  text-align: center;
+
+
+
+
+
+  padding: 40px 20px;
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+}
+
+
+
+
+
+.agentao-thinking {
+
+
+
+  display: flex;
+
+
+
+  justify-content: flex-start;
+
+
+
+  align-items: center;
+
+
+
+  gap: 10px;
+
+
+
+  align-self: flex-start;
+
+
+
+  max-width: 90%;
+
+
+
+  padding: 10px 14px;
+
+
+
+  border-radius: var(--aic-radius);
+
+
+
+  border-bottom-left-radius: 2px;
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+  min-height: 32px;
+
+
+
+  animation: aic-fade-in 0.3s ease;
+
+
+
+}
+
+
+
+
+
+.agentao-thinking--hidden {
+
+
+
+
+
+  display: none;
+
+
+
+
+
+}
+
+
+
+
+
+.agentao-thinking canvas {
+
+
+
+
+
+  width: 24px;
+
+
+
+
+
+  height: 24px;
+
+
+
+
+
+  border-radius: 50%;
+
+
+
+
+
+  flex-shrink: 0;
+
+
+
+
+
+}
+
+
+
+
+
+.agentao-thinking-text {
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  color: var(--aic-text-secondary);
+
+
+
+
+
+  font-style: italic;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg {
+
+
+
+
+
+  max-width: 90%;
+
+
+
+
+
+  padding: 10px 14px;
+
+
+
+
+
+  border-radius: var(--aic-radius);
+
+
+
+
+
+  font-size: 14px;
+
+
+
+
+
+  word-wrap: break-word;
+
+
+
+
+
+  white-space: pre-wrap;
+
+
+
+
+
+  animation: aic-fade-in 0.2s ease;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+@keyframes aic-fade-in {
+
+
+
+
+
+  from {
+
+
+
+
+
+    opacity: 0;
+
+
+
+
+
+    transform: translateY(4px);
+
+
+
+
+
+  }
+
+
+
+
+
+  to {
+
+
+
+
+
+    opacity: 1;
+
+
+
+
+
+    transform: translateY(0);
+
+
+
+
+
+  }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--user {
+
+
+
+
+
+  align-self: flex-end;
+
+
+
+
+
+  background: var(--aic-accent);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+  border-bottom-right-radius: 2px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--assistant {
+
+
+
+
+
+  align-self: flex-start;
+
+
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+  border-bottom-left-radius: 2px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--error {
+
+
+
+
+
+  align-self: center;
+
+
+
+
+
+  background: transparent;
+
+
+
+
+
+  color: var(--aic-danger);
+
+
+
+
+
+  border: 1px solid var(--aic-danger);
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  text-align: center;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--thinking {
+
+
+
+
+
+  align-self: flex-start;
+
+
+
+
+
+  background: transparent;
+
+
+
+
+
+  color: var(--aic-text-muted);
+
+
+
+
+
+  font-style: italic;
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  border-left: 3px solid var(--aic-text-muted);
+
+
+
+
+
+  padding-left: 10px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--tool {
+
+
+
+
+
+  align-self: flex-start;
+
+
+
+
+
+  background: var(--aic-bg-tertiary);
+
+
+
+
+
+  color: var(--aic-text-secondary);
+
+
+
+
+
+  font-family: var(--aic-font-mono);
+
+
+
+
+
+  font-size: 12px;
+
+
+
+
+
+  max-width: 95%;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--tool .agentao-tool-header {
+
+
+
+
+
+  font-weight: 600;
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+  margin-bottom: 4px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-msg--tool .agentao-tool-status {
+
+
+
+
+
+  display: inline-block;
+
+
+
+
+
+  padding: 1px 6px;
+
+
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+
+
+  font-size: 11px;
+
+
+
+
+
+  margin-left: 6px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-tool-status--ok {
+
+
+
+
+
+  background: var(--aic-success);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-tool-status--error {
+
+
+
+
+
+  background: var(--aic-danger);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-tool-status--cancelled {
+
+
+
+
+
+  background: var(--aic-text-muted);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-tool-output {
+
+
+
+
+
+  margin-top: 6px;
+
+
+
+
+
+  padding: 6px 8px;
+
+
+
+
+
+  background: var(--aic-bg);
+
+
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+
+
+  max-height: 200px;
+
+
+
+
+
+  overflow-y: auto;
+
+
+
+
+
+  white-space: pre-wrap;
+
+
+
+
+
+  word-break: break-all;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ── Prompt overlays (permission / ask_user) ────────────── */
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt {
+
+
+
+
+
+  position: fixed;
+
+
+
+
+
+  bottom: 0;
+
+
+
+
+
+  left: 0;
+
+
+
+
+
+  right: 0;
+
+
+
+
+
+  background: var(--aic-bg);
+
+
+
+
+
+  border-top: 1px solid var(--aic-border);
+
+
+
+
+
+  box-shadow: var(--aic-shadow-lg);
+
+
+
+
+
+  padding: 16px;
+
+
+
+
+
+  z-index: 100;
+
+
+
+
+
+  animation: aic-slide-up 0.2s ease;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt--hidden {
+
+
+
+
+
+  display: none;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+@keyframes aic-slide-up {
+
+
+
+
+
+  from {
+
+
+
+
+
+    transform: translateY(100%);
+
+
+
+
+
+  }
+
+
+
+
+
+  to {
+
+
+
+
+
+    transform: translateY(0);
+
+
+
+
+
+  }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-card {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  flex-direction: column;
+
+
+
+
+
+  gap: 8px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-title {
+
+
+
+
+
+  font-weight: 600;
+
+
+
+
+
+  font-size: 14px;
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-tool {
+
+
+
+
+
+  font-family: var(--aic-font-mono);
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  color: var(--aic-accent);
+
+
+
+
+
+  font-weight: 600;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-description {
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  color: var(--aic-text-secondary);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-args {
+
+
+
+
+
+  font-family: var(--aic-font-mono);
+
+
+
+
+
+  font-size: 12px;
+
+
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+
+
+  padding: 8px;
+
+
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+
+
+  overflow-x: auto;
+
+
+
+
+
+  max-height: 120px;
+
+
+
+
+
+  overflow-y: auto;
+
+
+
+
+
+  white-space: pre-wrap;
+
+
+
+
+
+  word-break: break-all;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-question {
+
+
+
+
+
+  font-size: 14px;
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+  margin-bottom: 4px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-options {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  flex-direction: column;
+
+
+
+
+
+  gap: 4px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-option {
+
+
+
+
+
+  padding: 6px 10px;
+
+
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+
+
+  background: var(--aic-bg);
+
+
+
+
+
+  cursor: pointer;
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  text-align: left;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-option:hover {
+
+
+
+
+
+  background: var(--aic-accent-light);
+
+
+
+
+
+  border-color: var(--aic-accent);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-input {
+
+
+
+
+
+  width: 100%;
+
+
+
+
+
+  padding: 8px 10px;
+
+
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+
+
+  font-family: var(--aic-font);
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  background: var(--aic-bg);
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-input:focus {
+
+
+
+
+
+  outline: none;
+
+
+
+
+
+  border-color: var(--aic-accent);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-prompt-actions {
+
+
+
+
+
+  display: flex;
+
+
+
+
+
+  justify-content: flex-end;
+
+
+
+
+
+  gap: 8px;
+
+
+
+
+
+  margin-top: 4px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ── Buttons ────────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn {
+
+
+
+
+
+  padding: 6px 16px;
+
+
+
+
+
+  border: none;
+
+
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+
+
+  font-family: var(--aic-font);
+
+
+
+
+
+  font-size: 13px;
+
+
+
+
+
+  font-weight: 500;
+
+
+
+
+
+  cursor: pointer;
+
+
+
+
+
+  transition: background 0.15s, opacity 0.15s;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn:disabled {
+
+
+
+
+
+  opacity: 0.5;
+
+
+
+
+
+  cursor: not-allowed;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--send {
+
+
+
+
+
+  background: var(--aic-accent);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--send:hover:not(:disabled) {
+
+
+
+
+
+  background: var(--aic-accent-hover);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--stop {
+
+
+
+
+
+  background: var(--aic-danger);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--stop:hover:not(:disabled) {
+
+
+
+
+
+  background: var(--aic-danger-hover);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--allow {
+
+
+
+
+
+  background: var(--aic-success);
+
+
+
+
+
+  color: #fff;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--allow:hover {
+
+
+
+
+
+  opacity: 0.9;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--deny {
+
+
+
+
+
+  background: var(--aic-bg-tertiary);
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--deny:hover {
+
+
+
+
+
+  opacity: 0.8;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-btn--hidden {
+
+
+
+
+
+  display: none;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ── Input bar ──────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
+
+
+.agentao-input-bar {
+
+
+
+
+
+  border-top: 1px solid var(--aic-border);
+
+
+
+
+
+  padding: 12px 16px;
+
+
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+
+
+  flex-shrink: 0;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-input {
+
+
+
+
+
+  width: 100%;
+
+
+
+
+
+  padding: 10px 12px;
+
+
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+
+
+  border-radius: var(--aic-radius);
+
+
+
+
+
+  font-family: var(--aic-font);
+
+
+
+
+
+  font-size: 14px;
+
+
+
+
+
+  resize: none;
+
+
+
+
+
+  max-height: 120px;
+
+
+
+
+
+  background: var(--aic-bg);
+
+
+
+
+
+  color: var(--aic-text);
+
+
+
+
+
+  line-height: 1.4;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-input:focus {
+
+
+
+
+
+  outline: none;
+
+
+
+
+
+  border-color: var(--aic-accent);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-input-actions {
+
+
+
+  display: flex;
+
+
+
+  justify-content: flex-end;
+
+
+
+  gap: 8px;
+
+
+
+  margin-top: 8px;
+
+
+
+}
+
+
+
+.agentao-input-row {
+
+
+
+  display: flex;
+
+
+
+  align-items: flex-end;
+
+
+
+  gap: 8px;
+
+
+
+}
+
+
+
+.agentao-input-row .agentao-input {
+
+
+
+  flex: 1;
+
+
+
+  margin-top: 0;
+
+
+
+}
+
+
+
+.agentao-btn--attach {
+
+
+
+  flex-shrink: 0;
+
+
+
+  width: 36px;
+
+
+
+  height: 36px;
+
+
+
+  padding: 0;
+
+
+
+  display: flex;
+
+
+
+  align-items: center;
+
+
+
+  justify-content: center;
+
+
+
+  font-size: 18px;
+
+
+
+  line-height: 1;
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+  border-radius: var(--aic-radius);
+
+
+
+  background: var(--aic-bg);
+
+
+
+  color: var(--aic-text);
+
+
+
+  cursor: pointer;
+
+
+
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+
+
+}
+
+
+
+.agentao-btn--attach:hover {
+
+
+
+  border-color: var(--aic-accent);
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+}
+
+
+
+.agentao-file-input {
+
+
+
+  display: none;
+
+
+
+}
+
+
+
+.agentao-attachments {
+
+
+
+  display: flex;
+
+
+
+  flex-wrap: wrap;
+
+
+
+  gap: 6px;
+
+
+
+  margin-bottom: 8px;
+
+
+
+}
+
+
+
+.agentao-attachments--hidden {
+
+
+
+  display: none;
+
+
+
+}
+
+
+
+.agentao-attachment {
+
+
+
+  display: inline-flex;
+
+
+
+  align-items: center;
+
+
+
+  gap: 6px;
+
+
+
+  max-width: 200px;
+
+
+
+  padding: 4px 8px;
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+  border-radius: 4px;
+
+
+
+  background: var(--aic-bg);
+
+
+
+  font-size: 12px;
+
+
+
+  color: var(--aic-text);
+
+
+
+  animation: aic-fade-in 0.2s ease;
+
+
+
+}
+
+
+
+.agentao-attachment-name {
+
+
+
+  overflow: hidden;
+
+
+
+  text-overflow: ellipsis;
+
+
+
+  white-space: nowrap;
+
+
+
+}
+
+
+
+.agentao-attachment-remove {
+
+
+
+  flex-shrink: 0;
+
+
+
+  border: none;
+
+
+
+  background: none;
+
+
+
+  color: var(--aic-text-muted);
+
+
+
+  cursor: pointer;
+
+
+
+  font-size: 14px;
+
+
+
+  line-height: 1;
+
+
+
+  padding: 0 2px;
+
+
+
+}
+
+
+
+.agentao-attachment-remove:hover {
+
+
+
+  color: var(--aic-accent);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
+
+
+.agentao-messages::-webkit-scrollbar,
+
+
+
+
+
+.agentao-tool-output::-webkit-scrollbar,
+
+
+
+
+
+.agentao-prompt-args::-webkit-scrollbar {
+
+
+
+
+
+  width: 6px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-messages::-webkit-scrollbar-thumb,
+
+
+
+
+
+.agentao-tool-output::-webkit-scrollbar-thumb,
+
+
+
+
+
+.agentao-prompt-args::-webkit-scrollbar-thumb {
+
+
+
+
+
+  background: var(--aic-text-muted);
+
+
+
+
+
+  border-radius: 3px;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.agentao-messages::-webkit-scrollbar-track,
+
+
+
+
+
+.agentao-tool-output::-webkit-scrollbar-track,
+
+
+
+
+
+.agentao-prompt-args::-webkit-scrollbar-track {
+
+
+
+
+
+  background: transparent;
+
+
+
+
+
+}
+
+
+
+
+
+
+.agentao-header-title {
+  display: none !important;
+}

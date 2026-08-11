@@ -1,0 +1,1207 @@
+/* options.css
+
+
+
+ *
+
+
+
+ * Agentao in Chrome 设置页样式。复用 sidepanel.css 的 CSS 变量体系。
+
+
+
+ */
+
+
+
+
+
+
+
+:root {
+
+
+
+  --aic-bg: #ffffff;
+
+
+
+  --aic-bg-secondary: #f5f5f7;
+
+
+
+  --aic-bg-tertiary: #ebebef;
+
+
+
+  --aic-text: #1a1a2e;
+
+
+
+  --aic-text-secondary: #6b6b7e;
+
+
+
+  --aic-text-muted: #9a9aae;
+
+
+
+  --aic-border: #e0e0e6;
+
+
+
+  --aic-accent: #4e8df5;
+
+
+
+  --aic-accent-hover: #3a7be0;
+
+
+
+  --aic-accent-light: #e8f0fe;
+
+
+
+  --aic-danger: #e5484d;
+
+
+
+  --aic-success: #30a46c;
+
+
+
+  --aic-warning: #f5a623;
+
+
+
+  --aic-radius: 8px;
+
+
+
+  --aic-radius-sm: 4px;
+
+
+
+  --aic-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+
+
+
+    Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+
+
+  --aic-font-mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+
+
+
+}
+
+
+
+
+
+
+
+[data-theme="dark"] {
+
+
+
+  --aic-bg: #16213e;
+
+
+
+  --aic-bg-secondary: #1a1a2e;
+
+
+
+  --aic-bg-tertiary: #232342;
+
+
+
+  --aic-text: #e4e4ef;
+
+
+
+  --aic-text-secondary: #a0a0b8;
+
+
+
+  --aic-text-muted: #6b6b7e;
+
+
+
+  --aic-border: #2a2a4a;
+
+
+
+  --aic-accent: #5b9bf5;
+
+
+
+  --aic-accent-hover: #7ab0f7;
+
+
+
+  --aic-accent-light: #1e2d4a;
+
+
+
+  --aic-danger: #ff6b6b;
+
+
+
+  --aic-success: #4ade80;
+
+
+
+  --aic-warning: #fbbf24;
+
+
+
+}
+
+
+
+
+
+
+
+* {
+
+
+
+  margin: 0;
+
+
+
+  padding: 0;
+
+
+
+  box-sizing: border-box;
+
+
+
+}
+
+
+
+
+
+
+
+body {
+
+
+
+  font-family: var(--aic-font);
+
+
+
+  font-size: 14px;
+
+
+
+  line-height: 1.5;
+
+
+
+  color: var(--aic-text);
+
+
+
+  background: var(--aic-bg-secondary);
+
+
+
+  min-height: 100vh;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-options {
+
+
+
+  max-width: 720px;
+
+
+
+  margin: 0 auto;
+
+
+
+  padding: 32px 24px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-options-header {
+
+
+
+  margin-bottom: 32px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-options-header h1 {
+
+
+
+  font-size: 24px;
+
+
+
+  font-weight: 700;
+
+
+
+  margin-bottom: 4px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-options-subtitle {
+
+
+
+  color: var(--aic-text-secondary);
+
+
+
+  font-size: 14px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-options-body {
+
+
+
+  display: flex;
+
+
+
+  flex-direction: column;
+
+
+
+  gap: 24px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-section {
+
+
+
+  background: var(--aic-bg);
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+  border-radius: var(--aic-radius);
+
+
+
+  padding: 24px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-section h2 {
+
+
+
+  font-size: 16px;
+
+
+
+  font-weight: 600;
+
+
+
+  margin-bottom: 4px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-section-hint {
+
+
+
+  font-size: 13px;
+
+
+
+  color: var(--aic-text-secondary);
+
+
+
+  margin-bottom: 16px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field {
+
+
+
+  margin-bottom: 16px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-row {
+
+
+
+  display: flex;
+
+
+
+  gap: 16px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-row .agentao-field {
+
+
+
+  flex: 1;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field label {
+
+
+
+  display: block;
+
+
+
+  font-size: 13px;
+
+
+
+  font-weight: 500;
+
+
+
+  margin-bottom: 4px;
+
+
+
+  color: var(--aic-text);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field input,
+
+
+
+.agentao-field select {
+
+
+
+  width: 100%;
+
+
+
+  padding: 8px 10px;
+
+
+
+  border: 1px solid var(--aic-border);
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+  font-family: var(--aic-font);
+
+
+
+  font-size: 13px;
+
+
+
+  background: var(--aic-bg);
+
+
+
+  color: var(--aic-text);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field input:focus,
+
+
+
+.agentao-field select:focus {
+
+
+
+  outline: none;
+
+
+
+  border-color: var(--aic-accent);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-hint {
+
+
+
+  font-size: 12px;
+
+
+
+  color: var(--aic-text-muted);
+
+
+
+  margin-top: 4px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-actions {
+
+
+
+  display: flex;
+
+
+
+  gap: 8px;
+
+
+
+  margin-top: 8px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-status {
+
+
+
+  margin-top: 8px;
+
+
+
+  font-size: 13px;
+
+
+
+  min-height: 18px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-status--ok {
+
+
+
+  color: var(--aic-success);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-field-status--error {
+
+
+
+  color: var(--aic-danger);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-btn {
+
+
+
+  padding: 8px 18px;
+
+
+
+  border: none;
+
+
+
+  border-radius: var(--aic-radius-sm);
+
+
+
+  font-family: var(--aic-font);
+
+
+
+  font-size: 13px;
+
+
+
+  font-weight: 500;
+
+
+
+  cursor: pointer;
+
+
+
+  transition: background 0.15s, opacity 0.15s;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-btn--primary {
+
+
+
+  background: var(--aic-accent);
+
+
+
+  color: #fff;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-btn--primary:hover {
+
+
+
+  background: var(--aic-accent-hover);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-btn--secondary {
+
+
+
+  background: var(--aic-bg-tertiary);
+
+
+
+  color: var(--aic-text);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-btn--secondary:hover {
+
+
+
+  opacity: 0.85;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-host-status {
+
+
+
+  display: flex;
+
+
+
+  align-items: center;
+
+
+
+  gap: 8px;
+
+
+
+  font-size: 13px;
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-status-dot {
+
+
+
+  width: 10px;
+
+
+
+  height: 10px;
+
+
+
+  border-radius: 50%;
+
+
+
+  background: var(--aic-text-muted);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-host-status--connected .agentao-status-dot {
+
+
+
+  background: var(--aic-success);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-host-status--disconnected .agentao-status-dot {
+
+
+
+  background: var(--aic-danger);
+
+
+
+}
+
+
+
+
+
+
+
+.agentao-host-status--connecting .agentao-status-dot {
+
+
+
+  background: var(--aic-warning);
+
+
+
+  animation: aic-pulse 1.5s ease-in-out infinite;
+
+
+
+}
+
+
+
+
+
+
+
+
+.agentao-host-status--llm_error .agentao-status-dot {
+  background: var(--aic-warning);
+  animation: aic-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes aic-pulse {
+
+
+  0%,
+
+
+  100% {
+
+
+    opacity: 1;
+
+
+  }
+
+
+  50% {
+
+
+    opacity: 0.4;
+
+
+  }
+
+
+}
+
+
+
+
+
+/* ── Toggle switch ─────────────────────────────────────────────────── */
+
+
+
+
+
+.agentao-field--toggle {
+
+
+  display: flex;
+
+
+  align-items: flex-start;
+
+
+  gap: 12px;
+
+
+}
+
+
+
+
+
+.agentao-toggle {
+
+
+  position: relative;
+
+
+  display: inline-block;
+
+
+  flex-shrink: 0;
+
+
+  width: 40px;
+
+
+  height: 22px;
+
+
+  margin-top: 2px;
+
+
+  cursor: pointer;
+
+
+}
+
+
+
+
+
+.agentao-toggle input {
+
+
+  position: absolute;
+
+
+  opacity: 0;
+
+
+  width: 100%;
+
+
+  height: 100%;
+
+
+  margin: 0;
+
+
+  cursor: pointer;
+
+
+}
+
+
+
+
+
+.agentao-toggle-track {
+
+
+  position: absolute;
+
+
+  inset: 0;
+
+
+  background: var(--aic-bg-tertiary);
+
+
+  border: 1px solid var(--aic-border);
+
+
+  border-radius: 11px;
+
+
+  transition: background 0.2s, border-color 0.2s;
+
+
+}
+
+
+
+
+
+.agentao-toggle-track::after {
+
+
+  content: "";
+
+
+  position: absolute;
+
+
+  top: 2px;
+
+
+  left: 2px;
+
+
+  width: 16px;
+
+
+  height: 16px;
+
+
+  background: var(--aic-bg);
+
+
+  border-radius: 50%;
+
+
+  transition: transform 0.2s;
+
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+
+}
+
+
+
+
+
+.agentao-toggle input:checked + .agentao-toggle-track {
+
+
+  background: var(--aic-accent);
+
+
+  border-color: var(--aic-accent);
+
+
+}
+
+
+
+
+
+.agentao-toggle input:checked + .agentao-toggle-track::after {
+
+
+  transform: translateX(18px);
+
+
+}
+
+
+
+
+
+.agentao-toggle input:focus-visible + .agentao-toggle-track {
+
+
+  outline: 2px solid var(--aic-accent);
+
+
+  outline-offset: 2px;
+
+
+}
+
+
+
+
+
+.agentao-toggle-label {
+
+
+  display: flex;
+
+
+  flex-direction: column;
+
+
+  gap: 2px;
+
+
+}
+
+
+
+
+
+.agentao-toggle-title {
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  color: var(--aic-text);
+
+}
+
+
+
+/* —— Fetch Models button (small, inline under API Key) —— */
+
+.agentao-btn--sm {
+
+  margin-top: 6px;
+
+  padding: 5px 12px;
+
+  font-size: 12px;
+
+}
+
+
+
+/* —— Model input + dropdown group —— */
+.agentao-model-input-group {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.agentao-model-input-group input {
+  flex: 1;
+}
+
+.agentao-model-select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--aic-border);
+  border-radius: var(--aic-radius-sm);
+  font-family: var(--aic-font);
+  font-size: 13px;
+  background: var(--aic-bg);
+  color: var(--aic-text);
+  cursor: pointer;
+}
+
+
+
+.agentao-model-select:focus {
+
+  outline: none;
+
+  border-color: var(--aic-accent);
+
+}
+
+
+
+.agentao-model-select--hidden {
+
+  display: none;
+
+}
+
+

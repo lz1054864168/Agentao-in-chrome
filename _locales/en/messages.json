@@ -1,0 +1,1338 @@
+{
+
+
+
+
+
+  "extensionName": {
+
+
+
+
+
+    "message": "Agentao in Chrome",
+
+
+
+
+
+    "description": "Extension name"
+
+
+
+
+
+  },
+
+
+
+
+
+  "extensionDescription": {
+
+
+
+
+
+    "message": "Put the Agentao governed agent runtime into the Chrome sidebar.",
+
+
+
+
+
+    "description": "Extension description"
+
+
+
+
+
+  },
+
+
+
+
+
+  "statusConnected": {
+
+
+
+
+
+    "message": "Connected",
+
+
+
+
+
+    "description": "Host connection status"
+
+
+
+
+
+  },
+
+
+
+
+
+  "statusConnecting": {
+
+
+
+
+
+    "message": "Connecting…",
+
+
+
+
+
+    "description": "Host connection status"
+
+
+
+
+
+  },
+
+
+
+
+
+  "statusDisconnected": {
+    "message": "Disconnected",
+    "description": "Host connection status"
+  },
+  "statusLlmError": {
+    "message": "Model unavailable",
+    "description": "Host connected but LLM unreachable"
+  },
+
+
+
+
+
+
+
+  "hostStatusConnected": {
+
+
+
+
+
+
+
+    "message": "Connected — native host is running.",
+
+
+
+
+
+
+
+    "description": "Settings page host status"
+
+
+
+
+
+
+
+  },
+
+
+
+
+
+
+
+  "hostStatusConnecting": {
+
+
+
+
+
+
+
+    "message": "Connecting…",
+
+
+
+
+
+
+
+    "description": "Settings page host status"
+
+
+
+
+
+
+
+  },
+
+
+
+
+
+
+
+  "hostStatusDisconnected": {
+    "message": "Disconnected — install or start the native host.",
+    "description": "Settings page host status"
+  },
+  "hostStatusLlmError": {
+    "message": "Model unavailable — host is connected but LLM is unreachable. Check Base URL and API Key.",
+    "description": "Settings page host status"
+  },
+
+
+
+
+  "emptyHint": {
+
+
+
+
+
+    "message": "Agentao is ready. Type a message below to start.",
+
+
+
+
+
+    "description": "Empty state hint in the sidebar"
+
+
+
+
+
+  },
+
+
+
+
+
+  "inputPlaceholder": {
+
+
+
+
+
+    "message": "Type a message… (Enter to send, Shift+Enter for newline)",
+
+
+
+
+
+    "description": "Input box placeholder"
+
+
+
+
+
+  },
+
+
+
+
+
+  "send": {
+
+
+
+
+
+    "message": "Send",
+
+
+
+
+
+    "description": "Send button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "stop": {
+
+
+
+
+
+    "message": "Stop",
+
+
+
+
+
+    "description": "Stop button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "permissionTitle": {
+
+
+
+
+
+    "message": "Permission Required",
+
+
+
+
+
+    "description": "Permission prompt title"
+
+
+
+
+
+  },
+
+
+
+
+
+  "allow": {
+
+
+
+
+
+    "message": "Allow",
+
+
+
+
+
+    "description": "Allow button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "deny": {
+
+
+
+
+
+    "message": "Deny",
+
+
+
+
+
+    "description": "Deny button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "askTitle": {
+
+
+
+
+
+    "message": "Question",
+
+
+
+
+
+    "description": "ask_user prompt title"
+
+
+
+
+
+  },
+
+
+
+
+
+  "cancel": {
+
+
+
+
+
+    "message": "Cancel",
+
+
+
+
+
+    "description": "Cancel button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "submit": {
+
+
+
+
+
+    "message": "Submit",
+
+
+
+
+
+    "description": "Submit button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "settingsSubtitle": {
+
+
+
+
+
+    "message": "Configure your model provider and runtime preferences.",
+
+
+
+
+
+    "description": "Settings page subtitle"
+
+
+
+
+
+  },
+
+
+
+
+
+  "sectionProvider": {
+
+
+
+
+
+    "message": "Model Provider",
+
+
+
+
+
+    "description": "Settings section title"
+
+
+
+
+
+  },
+
+
+
+
+
+  "sectionProviderHint": {
+
+
+
+
+
+    "message": "Configure an OpenAI-compatible endpoint. Credentials are stored locally and only sent to the native host.",
+
+
+
+
+
+    "description": "Settings section hint"
+
+
+
+
+
+  },
+
+
+
+
+
+  "sectionRuntime": {
+
+
+
+
+
+    "message": "Runtime",
+
+
+
+
+
+    "description": "Settings section title"
+
+
+
+
+
+  },
+
+
+
+
+
+  "sectionAppearance": {
+
+
+
+
+
+    "message": "Appearance",
+
+
+
+
+
+    "description": "Settings section title"
+
+
+
+
+
+  },
+
+
+
+
+
+  "sectionNativeHost": {
+
+
+
+
+
+    "message": "Native Host",
+
+
+
+
+
+    "description": "Settings section title"
+
+
+
+
+
+  },
+
+
+
+
+
+  "sectionNativeHostHint": {
+
+
+
+
+
+    "message": "The extension communicates with a local Python process via Chrome Native Messaging. If the status below is \"Disconnected\", install the host using scripts/install_native_host.py.",
+
+
+
+
+
+    "description": "Settings section hint"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldName": {
+
+
+
+
+
+    "message": "Profile Name",
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldFormat": {
+
+
+
+
+
+    "message": "Provider Format",
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldBaseUrl": {
+
+
+
+
+
+    "message": "Base URL",
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldApiKey": {
+
+
+
+
+
+    "message": "API Key",
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldModel": {
+
+
+
+
+
+    "message": "Model",
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldTemperature": {
+
+
+
+
+
+    "message": "Temperature",
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldMaxTokens": {
+
+
+
+
+
+
+
+
+    "message": "Max Tokens",
+
+
+
+
+
+
+
+
+    "description": "Provider field label"
+
+
+
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldVision": {
+
+
+
+
+
+    "message": "Vision (Multimodal)",
+
+
+
+
+
+    "description": "Provider field label — vision toggle"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldVisionHint": {
+
+
+
+
+
+    "message": "Enable if the model supports image input. When off, screenshot and other vision-dependent tools are disabled.",
+
+
+
+
+
+    "description": "Provider field hint — vision toggle"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldPermissionMode": {
+
+
+
+
+    "message": "Permission Mode",
+
+
+
+
+
+    "description": "Runtime field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldPermissionModeHint": {
+
+
+
+
+
+    "message": "Controls which tools the agent may run without asking. Read-only blocks all writes and shell.",
+
+
+
+
+
+    "description": "Runtime field hint"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldWorkingDirectory": {
+
+
+
+
+
+    "message": "Working Directory",
+
+
+
+
+
+    "description": "Runtime field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldWorkingDirectoryHint": {
+
+
+
+
+
+    "message": "The agent's workspace path on the native host. File tools resolve against this directory.",
+
+
+
+
+
+    "description": "Runtime field hint"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldTheme": {
+
+
+
+
+
+    "message": "Theme",
+
+
+
+
+
+    "description": "Appearance field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "fieldLocale": {
+
+
+
+
+
+    "message": "Language",
+
+
+
+
+
+    "description": "Appearance field label"
+
+
+
+
+
+  },
+
+
+
+
+
+  "themeAuto": {
+
+
+
+
+
+    "message": "Auto (follow system)",
+
+
+
+
+
+    "description": "Theme option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "themeLight": {
+
+
+
+
+
+    "message": "Light",
+
+
+
+
+
+    "description": "Theme option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "themeDark": {
+
+
+
+
+
+    "message": "Dark",
+
+
+
+
+
+    "description": "Theme option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "modeReadOnly": {
+
+
+
+
+
+    "message": "Read-only",
+
+
+
+
+
+    "description": "Permission mode option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "modeWorkspaceWrite": {
+
+
+
+
+
+    "message": "Workspace-write (default)",
+
+
+
+
+
+    "description": "Permission mode option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "modeFullAccess": {
+
+
+
+
+
+    "message": "Full-access",
+
+
+
+
+
+    "description": "Permission mode option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "modePlan": {
+
+
+
+
+
+    "message": "Plan",
+
+
+
+
+
+    "description": "Permission mode option"
+
+
+
+
+
+  },
+
+
+
+
+
+  "test": {
+
+
+
+
+
+    "message": "Test Connection",
+
+
+
+
+
+    "description": "Test button"
+
+
+
+
+
+  },
+
+
+
+
+
+  "save": {
+
+
+
+    "message": "Save",
+
+
+
+    "description": "Save button"
+
+
+
+  },
+
+
+
+  "fetchModels": {
+
+
+
+    "message": "Fetch Models",
+
+
+
+    "description": "Fetch available models button"
+
+
+
+  },
+
+
+
+  "openSettings": {
+
+
+
+
+    "message": "Settings",
+
+
+
+
+    "description": "Open settings button"
+
+
+
+
+  },
+
+
+
+
+  "setupBannerTitle": {
+
+
+
+
+    "message": "Configure your model provider",
+
+
+
+
+    "description": "Setup banner title"
+
+
+
+
+  },
+
+
+
+
+  "setupBannerHint": {
+
+
+
+
+
+    "message": "Set your API key and model in settings to start chatting.",
+
+
+
+
+
+    "description": "Setup banner hint"
+
+
+
+
+
+  },
+
+
+
+  "statusThinking": {
+
+
+
+    "message": "Thinking…",
+
+
+
+    "description": "Bottom status indicator — model is thinking"
+
+
+
+  },
+
+
+
+  "statusCompacting": {
+
+
+
+    "message": "Compacting…",
+
+
+
+    "description": "Bottom status indicator — context is being compacted"
+
+
+
+  },
+
+
+
+  "statusStartingUp": {
+
+
+
+    "message": "Starting up…",
+
+
+
+    "description": "Bottom status indicator — agent is starting up"
+
+
+
+  },
+
+  "attachButton": {
+
+    "message": "Attach file",
+
+    "description": "Attach file button title"
+
+  },
+
+  "attachRemove": {
+
+    "message": "Remove",
+
+    "description": "Remove attachment button title"
+
+  },
+
+  "attachUnsupportedFormat": {
+
+    "message": "Unsupported file format. Only .doc, .docx, .pdf, .md are accepted.",
+
+    "description": "Error shown when an unsupported file type is attached"
+
+  },
+
+  "attachSent": {
+
+    "message": "Sent with attachments",
+
+    "description": "Placeholder text when a message is sent with attachments but no text"
+
+  }
+
+}
+
+
+
+
