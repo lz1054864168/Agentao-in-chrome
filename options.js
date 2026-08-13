@@ -24949,167 +24949,7 @@
 
 
 
-  function createRuntimeStatus() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const div = document.createElement("div");
+  function createRuntimeStatus() { const existing = document.getElementById("runtime-status"); if (existing) return existing; const div = document.createElement("div");
 
 
 
@@ -27509,7 +27349,7 @@
 
 
 
-    applyTheme(els.theme.value);
+    localStorage.setItem(contract.ui.THEME_STORAGE_KEY, els.theme.value); applyTheme(els.theme.value); globalThis.__AIC_I18N__?.setLocale(els.locale.value); notifyConfigUpdated();
 
 
 
@@ -27669,7 +27509,7 @@
 
 
 
-    showStatus(els.uiStatus || createUiStatus(), "Saved. Reload pages to apply language.", "ok");
+    showStatus(els.uiStatus || createUiStatus(), "Saved.", "ok");
 
 
 
@@ -28149,167 +27989,7 @@
 
 
 
-  function createUiStatus() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const div = document.createElement("div");
+  function createUiStatus() { const existing = document.getElementById("ui-status"); if (existing) return existing; const div = document.createElement("div");
 
 
 
@@ -35982,7 +35662,7 @@
 
 
 
-      const message = chrome.i18n.getMessage(i18nKey);
+      const message = globalThis.__AIC_I18N__?.getMessage(i18nKey);
 
 
 
@@ -40552,7 +40232,7 @@
 
 
 
-      const message = chrome.i18n.getMessage(key);
+      const message = globalThis.__AIC_I18N__?.getMessage(key);
 
 
 

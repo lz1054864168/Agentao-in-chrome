@@ -2102,7 +2102,7 @@
 
 
 
-      appendMessage("agentao-msg--error", chrome.i18n.getMessage("attachUnsupportedFormat") || "Unsupported file format. Only .doc, .docx, .pdf, .md are accepted.");
+      appendMessage("agentao-msg--error", globalThis.__AIC_I18N__?.getMessage("attachUnsupportedFormat") || "Unsupported file format. Only .doc, .docx, .pdf, .md are accepted.");
 
 
 
@@ -2518,7 +2518,7 @@
 
 
 
-      remove.title = chrome.i18n.getMessage("attachRemove") || "Remove";
+      remove.title = globalThis.__AIC_I18N__?.getMessage("attachRemove") || "Remove";
 
 
 
@@ -7151,7 +7151,7 @@
 
 
     thinkingIndicator.show();
-    thinkingIndicator.setText(chrome.i18n.getMessage("statusThinking") || "Thinking…");
+    thinkingIndicator.setText(globalThis.__AIC_I18N__?.getMessage("statusThinking") || "Thinking…");
 
 
 
@@ -12090,7 +12090,7 @@
 
 
 
-      const message = chrome.i18n.getMessage(i18nKey);
+      const message = globalThis.__AIC_I18N__?.getMessage(i18nKey);
 
 
 
@@ -12496,7 +12496,7 @@
 
 
 
-    renderUserMessage(text || (chrome.i18n.getMessage("attachSent") || "Sent with attachments"));
+    renderUserMessage(text || (globalThis.__AIC_I18N__?.getMessage("attachSent") || "Sent with attachments"));
 
 
 
@@ -17032,7 +17032,7 @@
 
 
 
-    if (area !== "local") return;
+    if (area !== "local") return; if (contract.ui.THEME_STORAGE_KEY in changes) { const _pref = changes[contract.ui.THEME_STORAGE_KEY].newValue; try { localStorage.setItem(contract.ui.THEME_STORAGE_KEY, _pref); } catch {} globalThis.__AIC_THEME__?.applyTheme(_pref); } if (contract.ui.PREFERRED_LOCALE_STORAGE_KEY in changes) { globalThis.__AIC_I18N__?.setLocale(changes[contract.ui.PREFERRED_LOCALE_STORAGE_KEY].newValue); }
 
 
 
@@ -17428,7 +17428,7 @@
 
 
 
-      const message = chrome.i18n.getMessage(key);
+      const message = globalThis.__AIC_I18N__?.getMessage(key);
 
 
 
@@ -17568,7 +17568,7 @@
 
 
 
-      const message = chrome.i18n.getMessage(key);
+      const message = globalThis.__AIC_I18N__?.getMessage(key);
 
 
 
