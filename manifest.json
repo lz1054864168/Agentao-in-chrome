@@ -1,51 +1,0 @@
-{
-  "manifest_version": 3,
-  "minimum_chrome_version": "116",
-  "name": "Agentao in Chrome",
-  "short_name": "Agentao",
-  "version": "0.1.0",
-  "description": "Put the Agentao governed agent runtime into the Chrome sidebar.",
-  "default_locale": "en",
-  "action": {
-    "default_title": "Agentao in Chrome"
-  },
-  "background": {
-    "service_worker": "service-worker-loader.js",
-    "type": "module"
-  },
-  "commands": {
-    "toggle-side-panel": {
-      "description": "Toggle Agentao side panel",
-      "suggested_key": {
-        "default": "Ctrl+E",
-        "mac": "Command+E"
-      }
-    }
-  },
-  "side_panel": {
-    "default_path": "sidepanel.html"
-  },
-  "options_page": "options.html",
-  "icons": {
-    "128": "icon2.png"
-  },
-  "permissions": [
-    "sidePanel",
-    "storage",
-    "activeTab",
-    "tabs",
-    "tabGroups",
-    "scripting",
-    "debugger",
-    "alarms",
-    "notifications",
-    "nativeMessaging",
-    "unlimitedStorage"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https: http: wss: http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:*; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
-  }
-}
