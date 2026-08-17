@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/icon2.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agentao in Chrome</title>
+    <script src="/theme-init.js"></script>
+    <script src="/agentao-contract.js"></script>
+    <script src="/i18n-runtime.js"></script>
+    <link rel="stylesheet" href="/sidepanel.css" />
+  </head>
+  <body>
+    <div id="agentao-root" class="agentao-app">
+      <!-- 顶栏：标�?+ 宿主连接状�?-->
+      <header class="agentao-header">
+        <div class="agentao-header-title">
+          <span class="agentao-logo">道</span>
+          <span>Agentao</span>
+        </div>
+        <div class="agentao-header-actions">
+
+          <div id="agentao-status" class="agentao-status agentao-status--disconnected">
+
+            <span class="agentao-status-dot"></span>
+
+            <span class="agentao-status-text" data-i18n="statusDisconnected">Disconnected</span>
+
+          </div>
+
+          <button id="agentao-open-settings" class="agentao-icon-btn" type="button" title="Settings" aria-label="Settings" data-i18n-title="openSettings">
+
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+
+          </button>
+
+        </div>
+
+      </header>
+
+      <!-- 配置引导提示条（未配置供应商时显示） -->
+
+      <div id="agentao-setup-banner" class="agentao-setup-banner agentao-setup-banner--hidden">
+
+        <div class="agentao-setup-banner-body">
+
+          <div class="agentao-setup-banner-title" data-i18n="setupBannerTitle">Configure your model provider</div>
+
+          <div class="agentao-setup-banner-hint" data-i18n="setupBannerHint">Set your API key and model in settings to start chatting.</div>
+
+          <button id="agentao-setup-open-settings" class="agentao-btn agentao-btn--send" type="button" data-i18n="openSettings">Settings</button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 消息�?-->
+      <main id="agentao-messages" class="agentao-messages">
+
+
+
+        <div class="agentao-empty" data-i18n="emptyHint">
+
+
+
+          Agentao is ready. Type a message below to start.
+
+
+
+        </div>
+
+
+
+      
+
+
+
+      <!-- ˼��ָʾ���������ڶԻ��������ֻظ����ֵ�λ�� -->
+
+
+
+      <div id="agentao-thinking" class="agentao-thinking agentao-thinking--hidden">
+
+
+
+        <canvas id="agentao-thinking-canvas" width="48" height="48"></canvas>
+
+
+
+        <span id="agentao-thinking-text" class="agentao-thinking-text" data-i18n="statusThinking">Thinking…</span>
+
+
+
+      </div>
+
+
+
+</main>
+
+
+
+
+      <!-- 权限确认弹层（宿主请求工具确认时显示�?-->
+      <div id="agentao-permission-prompt" class="agentao-prompt agentao-prompt--hidden">
+        <div class="agentao-prompt-card">
+          <div class="agentao-prompt-title" data-i18n="permissionTitle">Permission Required</div>
+          <div class="agentao-prompt-body">
+            <div class="agentao-prompt-tool"></div>
+            <div class="agentao-prompt-description"></div>
+            <pre class="agentao-prompt-args"></pre>
+          </div>
+          <div class="agentao-prompt-actions">
+            <button class="agentao-btn agentao-btn--deny" data-i18n="deny">Deny</button>
+            <button class="agentao-btn agentao-btn--allow" data-i18n="allow">Allow</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ask_user 弹层（宿主请求用户输入时显示�?-->
+      <div id="agentao-ask-user-prompt" class="agentao-prompt agentao-prompt--hidden">
+        <div class="agentao-prompt-card">
+          <div class="agentao-prompt-title" data-i18n="askTitle">Question</div>
+          <div class="agentao-prompt-body">
+            <div class="agentao-prompt-question"></div>
+            <div class="agentao-prompt-options"></div>
+            <input type="text" class="agentao-prompt-input" />
+          </div>
+          <div class="agentao-prompt-actions">
+            <button class="agentao-btn agentao-btn--deny" data-i18n="cancel">Cancel</button>
+            <button class="agentao-btn agentao-btn--allow" data-i18n="submit">Submit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 输入�?-->
+      <footer class="agentao-input-bar">
+        <div id="agentao-attachments" class="agentao-attachments agentao-attachments--hidden"></div>
+        <div class="agentao-input-row">
+          <textarea
+            id="agentao-input"
+            class="agentao-input"
+            rows="1"
+            data-i18n-placeholder="inputPlaceholder"
+            placeholder="Type a message… (Enter to send, Shift+Enter for newline)"
+          ></textarea>
+          <button id="agentao-attach" class="agentao-btn agentao-btn--attach" data-i18n-title="attachButton" title="Attach file">📎</button>
+          <input type="file" id="agentao-file-input" class="agentao-file-input" accept=".doc,.docx,.pdf,.md" multiple />
+          <div class="agentao-input-actions">
+            <button id="agentao-stop" class="agentao-btn agentao-btn--stop agentao-btn--hidden" data-i18n="stop">Stop</button>
+            <button id="agentao-send" class="agentao-btn agentao-btn--send" data-i18n="send">Send</button>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/sidepanel.js"></script>
+  </body>
+</html>

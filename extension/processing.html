@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>太极图 - 无条纹旋转</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        canvas {
+            border-radius: 50%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            display: block;
+            margin: 0 auto;
+            width: 300px;
+            height: 300px;
+            background: white;
+        }
+        p {
+            margin-top: 20px;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="taijiCanvas" width="300" height="300"></canvas>
+    </div>
+    <script>
+        (function() {
+            const canvas = document.getElementById('taijiCanvas');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // ----- 1. 创建离屏 Canvas 并绘制静态太极图 -----
+            const offscreen = document.createElement('canvas');
+            offscreen.width = w;
+            offscreen.height = h;
+            const offCtx = offscreen.getContext('2d');
+
+            const centerX = w / 2;
+            const centerY = h / 2;
+            const radius = 120;
+            const smallRadius = radius / 2;
+            const eyeRadius = radius / 8;
+
+            // 绘制函数（无旋转，只画一次）
+            function drawStaticTaiji() {
+                const c = offCtx;
+                // 清空（透明背景）
+                c.clearRect(0, 0, w, h);
+
+                // 1. 白色大圆
+                c.beginPath();
+                c.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                c.fillStyle = '#ffffff';
+                c.fill();
+
+                // 2. 黑色半圆（右半）
+                c.beginPath();
+                c.arc(centerX, centerY, radius, -Math.PI / 2, Math.PI / 2);
+                c.fillStyle = '#000000';
+                c.fill();
+
+                // 3. 黑色小半圆（左上）
+                c.beginPath();
+                c.arc(centerX, centerY - smallRadius, smallRadius, Math.PI / 2, 3 * Math.PI / 2);
+                c.fillStyle = '#000000';
+                c.fill();
+
+                // 4. 白色小半圆（右下）
+                c.beginPath();
+                c.arc(centerX, centerY + smallRadius, smallRadius, -Math.PI / 2, Math.PI / 2);
+                c.fillStyle = '#ffffff';
+                c.fill();
+
+                // 5. 鱼眼（白色上眼，黑色下眼）
+                c.beginPath();
+                c.arc(centerX, centerY - smallRadius, eyeRadius, 0, 2 * Math.PI);
+                c.fillStyle = '#ffffff';
+                c.fill();
+
+                c.beginPath();
+                c.arc(centerX, centerY + smallRadius, eyeRadius, 0, 2 * Math.PI);
+                c.fillStyle = '#000000';
+                c.fill();
+            }
+
+            drawStaticTaiji();
+
+            // ----- 2. 主循环：旋转绘制离屏图像 -----
+            let angle = 0;
+
+            function animate() {
+                // 每次旋转角度增量（负值为逆时针）
+                angle -= 0.02;
+
+                // 清空主画布（透明）
+                ctx.clearRect(0, 0, w, h);
+
+                // 保存状态并旋转
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle);
+                // 绘制离屏图像（注意偏移，因为离屏图像原点在左上角）
+                ctx.drawImage(offscreen, -centerX, -centerY);
+                ctx.restore();
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

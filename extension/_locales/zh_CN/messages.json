@@ -1,0 +1,866 @@
+{
+
+
+
+  "extensionName": {
+
+
+
+    "message": "Agentao in Chrome",
+
+
+
+    "description": "扩展名称"
+
+
+
+  },
+
+
+
+  "extensionDescription": {
+
+
+
+    "message": "把 Agentao 受治理智能体运行时放进 Chrome 侧边栏。",
+
+
+
+    "description": "扩展描述"
+
+
+
+  },
+
+
+
+  "statusConnected": {
+
+
+
+    "message": "已连接",
+
+
+
+    "description": "宿主连接状态"
+
+
+
+  },
+
+
+
+  "statusConnecting": {
+
+
+
+    "message": "连接中…",
+
+
+
+    "description": "宿主连接状态"
+
+
+
+  },
+
+
+
+  "statusDisconnected": {
+    "message": "未连接",
+    "description": "宿主连接状态"
+  },
+  "statusLlmError": {
+    "message": "模型不可用",
+    "description": "宿主已连接但 LLM 不可达"
+  },
+
+
+  "hostStatusConnected": {
+
+
+    "message": "已连接 — 原生宿主正在运行。",
+
+
+    "description": "设置页宿主状态"
+
+
+  },
+
+
+  "hostStatusConnecting": {
+
+
+    "message": "连接中…",
+
+
+    "description": "设置页宿主状态"
+
+
+  },
+
+
+  "hostStatusDisconnected": {
+    "message": "未连接 — 请安装或启动原生宿主。",
+    "description": "设置页宿主状态"
+  },
+  "hostStatusLlmError": {
+    "message": "模型不可用 — 宿主已连接但 LLM 不可达，请检查 Base URL 和 API Key。",
+    "description": "设置页宿主状态"
+  },
+
+
+
+  "emptyHint": {
+
+
+
+    "message": "Agentao 已就绪，在下方输入消息开始对话。",
+
+
+
+    "description": "侧边栏空状态提示"
+
+
+
+  },
+
+
+
+  "inputPlaceholder": {
+
+
+
+    "message": "输入消息…（Enter 发送，Shift+Enter 换行）",
+
+
+
+    "description": "输入框占位符"
+
+
+
+  },
+
+
+
+  "send": {
+
+
+
+    "message": "发送",
+
+
+
+    "description": "发送按钮"
+
+
+
+  },
+
+
+
+  "stop": {
+
+
+
+    "message": "停止",
+
+
+
+    "description": "停止按钮"
+
+
+
+  },
+
+
+
+  "permissionTitle": {
+
+
+
+    "message": "需要权限确认",
+
+
+
+    "description": "权限弹层标题"
+
+
+
+  },
+
+
+
+  "allow": {
+
+
+
+    "message": "允许",
+
+
+
+    "description": "允许按钮"
+
+
+
+  },
+
+
+
+  "deny": {
+
+
+
+    "message": "拒绝",
+
+
+
+    "description": "拒绝按钮"
+
+
+
+  },
+
+
+
+  "askTitle": {
+
+
+
+    "message": "提问",
+
+
+
+    "description": "ask_user 弹层标题"
+
+
+
+  },
+
+
+
+  "cancel": {
+
+
+
+    "message": "取消",
+
+
+
+    "description": "取消按钮"
+
+
+
+  },
+
+
+
+  "submit": {
+
+
+
+    "message": "提交",
+
+
+
+    "description": "提交按钮"
+
+
+
+  },
+
+
+
+  "settingsSubtitle": {
+
+
+
+    "message": "配置模型供应商与运行时偏好。",
+
+
+
+    "description": "设置页副标题"
+
+
+
+  },
+
+
+
+  "sectionProvider": {
+
+
+
+    "message": "模型供应商",
+
+
+
+    "description": "设置区标题"
+
+
+
+  },
+
+
+
+  "sectionProviderHint": {
+
+
+
+    "message": "配置 OpenAI 兼容端点。凭证仅保存在本地，只发送给原生宿主。",
+
+
+
+    "description": "设置区提示"
+
+
+
+  },
+
+
+
+  "sectionRuntime": {
+
+
+
+    "message": "运行时",
+
+
+
+    "description": "设置区标题"
+
+
+
+  },
+
+
+
+  "sectionAppearance": {
+
+
+
+    "message": "外观",
+
+
+
+    "description": "设置区标题"
+
+
+
+  },
+
+
+
+  "sectionNativeHost": {
+
+
+
+    "message": "原生宿主",
+
+
+
+    "description": "设置区标题"
+
+
+
+  },
+
+
+
+  "sectionNativeHostHint": {
+
+
+
+    "message": "扩展通过 Chrome Native Messaging 与本地 Python 进程通信。若下方状态为\"未连接\"，请运行 scripts/install_native_host.py 安装宿主。",
+
+
+
+    "description": "设置区提示"
+
+
+
+  },
+
+
+
+  "fieldName": {
+
+
+
+    "message": "配置名称",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldFormat": {
+
+
+
+    "message": "供应商格式",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldBaseUrl": {
+
+
+
+    "message": "Base URL",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldApiKey": {
+
+
+
+    "message": "API Key",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldModel": {
+
+
+
+    "message": "模型",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldTemperature": {
+
+
+
+    "message": "Temperature",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldMaxTokens": {
+
+
+
+    "message": "Max Tokens",
+
+
+
+    "description": "供应商字段标签"
+
+
+
+  },
+
+
+
+  "fieldVision": {
+
+
+
+    "message": "视觉（多模态）",
+
+
+
+    "description": "供应商字段标签 — 视觉开关"
+
+
+
+  },
+
+
+
+  "fieldVisionHint": {
+
+
+
+    "message": "模型支持图像输入时开启。关闭后，截图等依赖视觉能力的工具将被禁用。",
+
+
+
+    "description": "供应商字段提示 — 视觉开关"
+
+
+
+  },
+
+
+
+  "fieldPermissionMode": {
+
+
+    "message": "权限模式",
+
+
+
+    "description": "运行时字段标签"
+
+
+
+  },
+
+
+
+  "fieldPermissionModeHint": {
+
+
+
+    "message": "控制智能体无需询问即可运行哪些工具。只读模式阻止所有写入与 shell。",
+
+
+
+    "description": "运行时字段提示"
+
+
+
+  },
+
+
+
+  "fieldWorkingDirectory": {
+
+
+
+    "message": "工作目录",
+
+
+
+    "description": "运行时字段标签"
+
+
+
+  },
+
+
+
+  "fieldWorkingDirectoryHint": {
+
+
+
+    "message": "原生宿主上的智能体工作区路径。文件工具基于此目录解析。",
+
+
+
+    "description": "运行时字段提示"
+
+
+
+  },
+
+
+
+  "fieldTheme": {
+
+
+
+    "message": "主题",
+
+
+
+    "description": "外观字段标签"
+
+
+
+  },
+
+
+
+  "fieldLocale": {
+
+
+
+    "message": "语言",
+
+
+
+    "description": "外观字段标签"
+
+
+
+  },
+
+
+
+  "themeAuto": {
+
+
+
+    "message": "自动（跟随系统）",
+
+
+
+    "description": "主题选项"
+
+
+
+  },
+
+
+
+  "themeLight": {
+
+
+
+    "message": "浅色",
+
+
+
+    "description": "主题选项"
+
+
+
+  },
+
+
+
+  "themeDark": {
+
+
+
+    "message": "深色",
+
+
+
+    "description": "主题选项"
+
+
+
+  },
+
+
+
+  "modeReadOnly": {
+
+
+
+    "message": "只读",
+
+
+
+    "description": "权限模式选项"
+
+
+
+  },
+
+
+
+  "modeWorkspaceWrite": {
+
+
+
+    "message": "工作区写入（默认）",
+
+
+
+    "description": "权限模式选项"
+
+
+
+  },
+
+
+
+  "modeFullAccess": {
+
+
+
+    "message": "完全访问",
+
+
+
+    "description": "权限模式选项"
+
+
+
+  },
+
+
+
+  "modePlan": {
+
+
+
+    "message": "计划",
+
+
+
+    "description": "权限模式选项"
+
+
+
+  },
+
+
+
+  "test": {
+
+
+
+    "message": "测试连接",
+
+
+
+    "description": "测试按钮"
+
+
+
+  },
+
+
+
+  "save": {
+
+
+    "message": "保存",
+
+
+    "description": "保存按钮"
+
+
+  },
+
+
+
+  "fetchModels": {
+
+
+
+    "message": "拉取模型",
+
+
+
+    "description": "拉取可用模型按钮"
+
+
+
+  },
+
+
+  "openSettings": {
+
+
+
+    "message": "设置",
+
+
+
+    "description": "打开设置按钮"
+
+
+
+  },
+
+
+
+  "setupBannerTitle": {
+
+
+
+    "message": "请配置模型供应商",
+
+
+
+    "description": "配置引导条标题"
+
+
+
+  },
+
+
+
+  "setupBannerHint": {
+
+
+
+    "message": "在设置页填写 API Key 和模型后即可开始对话。",
+
+
+
+    "description": "配置引导条提示"
+
+
+
+  },
+
+  "statusThinking": {
+
+    "message": "思考中…",
+
+    "description": "底部状态指示器 — 模型思考中"
+
+  },
+
+  "statusCompacting": {
+
+    "message": "压缩上下文中…",
+
+    "description": "底部状态指示器 — 正在压缩上下文"
+
+  },
+
+  "statusStartingUp": {
+
+    "message": "启动中…",
+
+    "description": "底部状态指示器 — 智能体启动中"
+
+  },
+  "attachButton": {
+    "message": "添加附件",
+    "description": "添加附件按钮标题"
+  },
+  "attachRemove": {
+    "message": "移除",
+    "description": "移除附件按钮标题"
+  },
+  "attachUnsupportedFormat": {
+    "message": "不支持的文件格式。仅支持 .doc、.docx、.pdf、.md。",
+    "description": "附件格式不支持时的错误提示"
+  },
+  "attachSent": {
+    "message": "已发送附件",
+    "description": "仅发送附件无文本时的占位文本"
+  }
+}

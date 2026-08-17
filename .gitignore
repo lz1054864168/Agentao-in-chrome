@@ -1,0 +1,47 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Node
+node_modules/
+
+# Build artifacts
+dist/
+build/
+Releases/
+*.spec
+
+# Extension signing key (keep secret — needed for Chrome Web Store upload)
+extension-key.pem
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Skills (business-specific, not for public repo)
+native-host/skills/
+native-host/AGENTAO.md
+
+# Dev process files
+tests/scratch/
+native-host/_*.py
+native-host/agentao-chrome-host.bat
+native-host/err.log
+
+# Agentao runtime artifacts
+.agentao/
+agentao.log
+
+# Test artifacts
+.pytest_cache/
+coverage/

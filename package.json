@@ -1,0 +1,14 @@
+{
+  "name": "agentao-in-chrome",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Put the Agentao governed agent runtime into the Chrome sidebar.",
+  "scripts": {
+    "check:release-package": "node scripts/check-release-package.js",
+    "test": "node tests/run-all-tests.js",
+    "test:unit": "node tests/run-suite.js unit"
+  },
+  "devDependencies": {},
+  "license": "MIT"
+}
