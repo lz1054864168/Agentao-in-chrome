@@ -54,7 +54,7 @@
 
 
 
-// 侧边栏聊天界面逻辑。职责：
+// 娓氀嗙珶閺嶅繗浜版径鈺冩櫕闂堛垽鈧槒绶妴鍌濅捍鐠愶綇绱?
 
 
 
@@ -82,7 +82,7 @@
 
 
 
-// 1) 渲染对话消息（用户 / 助手 / 思考 / 工具调用 / 错误）
+// 1) 濞撳弶鐓嬬€电鐦藉☉鍫熶紖閿涘牏鏁ら幋?/ 閸斺晜澧?/ 閹繆鈧?/ 瀹搞儱鍙跨拫鍐暏 / 闁挎瑨顕ら敍?
 
 
 
@@ -110,7 +110,7 @@
 
 
 
-// 2) 通过 chrome.runtime.sendMessage 与 service worker 通信
+// 2) 闁俺绻?chrome.runtime.sendMessage 娑?service worker 闁矮淇?
 
 
 
@@ -138,7 +138,7 @@
 
 
 
-// 3) 处理权限确认弹层与 ask_user 弹层
+// 3) 婢跺嫮鎮婇弶鍐绾喛顓诲鐟扮湴娑?ask_user 瀵懓鐪?
 
 
 
@@ -166,7 +166,7 @@
 
 
 
-// 4) 管理会话状态（sessionId、流式文本累积）
+// 4) 缁狅紕鎮婃导姘崇樈閻樿埖鈧緤绱檚essionId閵嗕焦绁﹀蹇旀瀮閺堫剛鐤粔顖ょ礆
 
 
 
@@ -222,7 +222,7 @@
 
 
 
-// 所有 message type / DOM id / storage key 都从 __AIC_CONTRACT__ 读取。
+// 閹碘偓閺?message type / DOM id / storage key 闁垝绮?__AIC_CONTRACT__ 鐠囪褰囬妴?
 
 
 
@@ -618,7 +618,7 @@
 
 
 
-  // ── DOM 引用 ─────────────────────────────────────────────
+  // 閳光偓閳光偓 DOM 瀵洜鏁?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -883,6 +883,10 @@
 
 
     openSettings: $("agentao-open-settings"),
+    sessionsBtn: $("agentao-sessions-btn"),
+    sessionsPanel: $("agentao-sessions-panel"),
+    sessionsList: $("agentao-sessions-list"),
+    newChatBtn: $("agentao-new-chat"),
 
 
 
@@ -1090,7 +1094,7 @@
 
 
 
-  // ── 会话状态 ─────────────────────────────────────────────
+  // 閳光偓閳光偓 娴兼俺鐦介悩鑸碘偓?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -1174,7 +1178,7 @@
 
 
 
-    // 当前回合的流式文本累积
+    // 瑜版挸澧犻崶鐐叉値閻ㄥ嫭绁﹀蹇旀瀮閺堫剛鐤粔?
 
 
 
@@ -1203,6 +1207,8 @@
 
 
     currentAssistantText: "",
+    currentThinkingText: "",
+    thinkingBlock: null,
 
 
 
@@ -1230,7 +1236,7 @@
 
 
 
-    // 当前回合的工具调用块（按 call_id 索引）
+    // 瑜版挸澧犻崶鐐叉値閻ㄥ嫬浼愰崗鐤殶閻劌娼￠敍鍫熷瘻 call_id 缁便垹绱╅敍?
 
 
 
@@ -1266,7 +1272,7 @@
 
 
 
-    // 附件列表：待发送的文件
+    // 闂勫嫪娆㈤崚妤勩€冮敍姘窡閸欐垿鈧胶娈戦弬鍥︽
 
 
 
@@ -1298,7 +1304,7 @@
 
 
 
-    // 当前回合是否正在运行
+    // 瑜版挸澧犻崶鐐叉値閺勵垰鎯佸锝呮躬鏉╂劘顢?
 
 
 
@@ -1354,7 +1360,7 @@
 
 
 
-    // 当前活跃的权限请求
+    // 瑜版挸澧犲ú鏄忕┈閻ㄥ嫭娼堥梽鎰嚞濮?
 
 
 
@@ -1410,7 +1416,7 @@
 
 
 
-    // 当前活跃的 ask_user 请求
+    // 瑜版挸澧犲ú鏄忕┈閻?ask_user 鐠囬攱鐪?
 
 
 
@@ -1634,7 +1640,7 @@
 
 
 
-  // ── 消息渲染 ─────────────────────────────────────────────
+  // 閳光偓閳光偓 濞戝牊浼呭〒鍙夌厠 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -1830,7 +1836,7 @@
 
 
 
-  // ── 附件管理 ─────────────────────────────────────────
+  // 閳光偓閳光偓 闂勫嫪娆㈢粻锛勬倞 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -3198,6 +3204,85 @@
 
 
 
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function renderMarkdown(text) {
+    if (!text) return "";
+    var codeBlocks = [];
+    text = text.replace(/```[\w]*\n?([\s\S]*?)```/g, function(_, code) {
+      var i = codeBlocks.length;
+      codeBlocks.push("<pre class=\"agentao-md-pre\"><code>" + escapeHtml(code.replace(/\n$/, "")) + "</code></pre>");
+      return "\x00CB" + i + "\x00";
+    });
+    text = text.replace(/```[\w]*\n?([\s\S]*)$/g, function(_, code) {
+      var i = codeBlocks.length;
+      codeBlocks.push("<pre class=\"agentao-md-pre\"><code>" + escapeHtml(code.replace(/\n$/, "")) + "</code></pre>");
+      return "\x00CB" + i + "\x00";
+    });
+    text = escapeHtml(text);
+    var tableBlocks = [];
+    text = text.replace(/^(\|.+)\n(\|[\s\-:|]+\|)\n((?:\|.+\|\n?)+)/gm, function(m0, hdr, sep, body) {
+      var i = tableBlocks.length;
+      var html = '<table class="agentao-md-table">';
+      var hCells = hdr.split('|').filter(function(c) { return c.trim() !== ''; });
+      html += '<thead><tr>';
+      hCells.forEach(function(c) { html += '<th>' + c.trim() + '</th>'; });
+      html += '</tr></thead><tbody>';
+      var bodyRows = body.trim().split('\n');
+      bodyRows.forEach(function(r) {
+        var cells = r.split('|').filter(function(c) { return c.trim() !== ''; });
+        html += '<tr>';
+        cells.forEach(function(c) { html += '<td>' + c.trim() + '</td>'; });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      tableBlocks.push(html);
+      return '\x00TB' + i + '\x00';
+    });
+    var lines = text.split("\n");
+    var html = [];
+    var inUl = false, inOl = false;
+    function closeList() {
+      if (inUl) { html.push("</ul>"); inUl = false; }
+      if (inOl) { html.push("</ol>"); inOl = false; }
+    }
+    for (var li = 0; li < lines.length; li++) {
+      var line = lines[li];
+      if (/^\x00CB\d+\x00$/.test(line)) { closeList(); html.push(line); continue; }
+      if (/^\x00TB\d+\x00$/.test(line)) { closeList(); html.push(line); continue; }
+      var h = line.match(/^(#{1,6})\s+(.+)$/);
+      if (h) { closeList(); var lv = h[1].length; html.push("<h" + lv + ">" + h[2] + "</h" + lv + ">"); continue; }
+      if (/^(-{3,}|\*{3,})$/.test(line.trim())) { closeList(); html.push("<hr>"); continue; }
+      var bq = line.match(/^&gt;\s?(.*)$/);
+      if (bq) { closeList(); html.push("<blockquote>" + bq[1] + "</blockquote>"); continue; }
+      var ul = line.match(/^[\-\*]\s+(.+)$/);
+      if (ul) { if (!inUl) { closeList(); html.push("<ul>"); inUl = true; } html.push("<li>" + ul[1] + "</li>"); continue; }
+      var ol = line.match(/^\d+\.\s+(.+)$/);
+      if (ol) { if (!inOl) { closeList(); html.push("<ol>"); inOl = true; } html.push("<li>" + ol[1] + "</li>"); continue; }
+      if (line.trim() === "") { closeList(); continue; }
+      closeList();
+      html.push("<p>" + line + "</p>");
+    }
+    closeList();
+    var result = html.join("\n");
+    result = result.replace(/<\/p>\n<p>/g, "<br>");
+    result = result.replace(/`([^`]+)`/g, "<code class=\"agentao-md-code\">$1</code>");
+    result = result.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    result = result.replace(/__([^_]+)__/g, "<strong>$1</strong>");
+    result = result.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+    result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\" target=\"_blank\" rel=\"noopener\">$1</a>");
+    for (var ti = 0; ti < tableBlocks.length; ti++) {
+      result = result.replace("\x00TB" + ti + "\x00", tableBlocks[ti]);
+    }
+    for (var ci = 0; ci < codeBlocks.length; ci++) {
+      result = result.replace("\x00CB" + ci + "\x00", codeBlocks[ci]);
+    }
+    return result;
+  }
+
   function ensureAssistantBlock() {
 
 
@@ -3786,62 +3871,66 @@
 
 
 
+  function ensureThinkingBlock() {
+    if (state.thinkingBlock) return state.thinkingBlock;
+    finalizeAssistantBlock();
+    clearEmptyHint();
+    thinkingIndicator.hide();
+    var block = document.createElement("div");
+    block.className = "agentao-msg agentao-msg--thinking agentao-thinking-stream";
+    block.setAttribute("data-current", "true");
+    var header = document.createElement("div");
+    header.className = "agentao-thinking-header";
+    header.innerHTML = '<span class="agentao-thinking-title">' +
+      (globalThis.__AIC_I18N__?.getMessage("statusThinking") || "Thinking") +
+      '</span>' +
+      '<span class="agentao-thinking-dots"><span></span><span></span><span></span></span>' +
+      '<span class="agentao-thinking-toggle">▸</span>';
+    var body = document.createElement("div");
+    body.className = "agentao-thinking-body";
+    body.textContent = "";
+    block.appendChild(header);
+    block.appendChild(body);
+    block.setAttribute("data-expanded", "false");
+    header.addEventListener("click", function() {
+      var expanded = block.getAttribute("data-expanded") === "true";
+      block.setAttribute("data-expanded", expanded ? "false" : "true");
+    });
+    els.messages.appendChild(block);
+    state.thinkingBlock = block;
+    scrollToBottom();
+    return block;
+  }
+
   function appendThinking(text) {
+    state.currentThinkingText += text;
+    var block = ensureThinkingBlock();
+    var body = block.querySelector(".agentao-thinking-body");
+    if (body) { body.textContent = state.currentThinkingText; }
+    var title = block.querySelector(".agentao-thinking-title");
+    if (title) {
+      var lines = state.currentThinkingText.trim().split("\n");
+      var last = lines[lines.length - 1];
+      title.textContent = last ? last.slice(0, 80) : (globalThis.__AIC_I18N__?.getMessage("statusThinking") || "Thinking");
+    }
+    scrollToBottom();
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    appendMessage("agentao-msg--thinking", text);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function finalizeThinkingBlock() {
+    var block = state.thinkingBlock;
+    if (!block) return;
+    block.removeAttribute("data-current");
+    block.classList.add("agentao-thinking-done");
+    var dots = block.querySelector(".agentao-thinking-dots");
+    if (dots) dots.style.display = "none";
+    var title = block.querySelector(".agentao-thinking-title");
+    if (title) {
+      var lines = state.currentThinkingText.trim().split("\n");
+      var first = lines[0];
+      title.textContent = first ? first.slice(0, 80) : "Thought process";
+    }
+    state.thinkingBlock = null;
+    state.currentThinkingText = "";
   }
 
 
@@ -3955,6 +4044,8 @@
 
 
     if (!block) {
+      finalizeAssistantBlock();
+      finalizeThinkingBlock();
 
 
 
@@ -4178,7 +4269,7 @@
 
 
 
-      header.textContent = `🔧 ${toolName}`;
+      header.textContent = `${toolName}`;
 
 
 
@@ -4766,7 +4857,7 @@
 
 
 
-    // 移除旧状态
+    // 缁夊娅庨弮褏濮搁幀?
 
 
 
@@ -5718,7 +5809,7 @@
 
 
 
-    // 工具结果替换流式输出（结果更完整）
+    // 瀹搞儱鍙跨紒鎾寸亯閺囨寧宕插ù浣哥础鏉堟挸鍤敍鍫㈢波閺嬫粍娲跨€瑰本鏆ｉ敍?
 
 
 
@@ -6418,7 +6509,7 @@
 
 
 
-  // ── 太极图思考指示器 ───────────────────────────────────────
+  // 閳光偓閳光偓 婢额亝鐎崶鐐偓婵娾偓鍐╁瘹缁€鍝勬珤 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -6426,11 +6517,11 @@
 
 
 
-  // 将 processing.html 的太极图旋转动画移植为思考指示器：
+  // 鐏?processing.html 閻ㄥ嫬銇婇弸浣告禈閺冨娴嗛崝銊ф暰缁夌粯顦叉稉鐑樷偓婵娾偓鍐╁瘹缁€鍝勬珤閿?
 
 
 
-  // beginTurn 时显示，收到第一条 LLM_TEXT 或 endTurn 时隐藏。
+  // beginTurn 閺冭埖妯夌粈鐚寸礉閺€璺哄煂缁楊兛绔撮弶?LLM_TEXT 閹?endTurn 閺冨爼娈ｉ挊蹇嬧偓?
 
 
 
@@ -6882,7 +6973,7 @@
 
 
 
-      // 移到消息列表末尾，在助手回复出现的位置显示
+      // 缁夎鍩屽☉鍫熶紖閸掓銆冮張顐㈢啲閿涘苯婀崝鈺傚閸ョ偛顦查崙铏瑰箛閻ㄥ嫪缍呯純顔芥▔缁€?
 
 
 
@@ -6902,7 +6993,7 @@
 
 
 
-      // 参考 claw-in-chrome：权限确认弹层显示时不展示思考指示器
+      // 閸欏倽鈧?claw-in-chrome閿涙碍娼堥梽鎰€樼拋銈呰剨鐏炲倹妯夌粈鐑樻娑撳秴鐫嶇粈鐑樷偓婵娾偓鍐╁瘹缁€鍝勬珤
 
 
 
@@ -7038,7 +7129,7 @@
 
 
 
-  // ── 回合生命周期 ─────────────────────────────────────────
+  // 閳光偓閳光偓 閸ョ偛鎮庨悽鐔锋嚒閸涖劍婀?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -7181,6 +7272,8 @@
 
 
     state.currentAssistantText = "";
+    state.currentThinkingText = "";
+    state.thinkingBlock = null;
 
 
 
@@ -7461,6 +7554,7 @@
 
 
     finalizeAssistantBlock();
+    finalizeThinkingBlock();
 
 
 
@@ -7656,7 +7750,7 @@
 
 
 
-  // ── 事件处理（来自 service worker 的 CHAT_EVENT）─────────
+  // 閳光偓閳光偓 娴滃娆㈡径鍕倞閿涘牊娼甸懛?service worker 閻?CHAT_EVENT閿涘鏀㈤埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧?
 
 
 
@@ -7992,7 +8086,7 @@
 
 
 
-        // 回合开始，携带 user_message
+        // 閸ョ偛鎮庡鈧慨瀣剁礉閹煎搫鐢?user_message
 
 
 
@@ -8245,6 +8339,7 @@
 
 
         if (data.chunk) {
+          finalizeThinkingBlock();
 
 
 
@@ -8328,7 +8423,7 @@
 
 
 
-          block.textContent = state.currentAssistantText;
+          block.innerHTML = renderMarkdown(state.currentAssistantText);
 
 
 
@@ -9196,7 +9291,7 @@
 
 
 
-        appendMessage("agentao-msg--thinking", `→ sub-agent: ${data.agent} (${data.task || ""})`);
+    appendMessage("agentao-msg--thinking", `→ sub-agent: ${data.agent} (${data.task || ""})`);
 
 
 
@@ -9308,7 +9403,7 @@
 
 
 
-        appendMessage("agentao-msg--thinking", `← sub-agent done: ${data.agent} (${data.state})`);
+    appendMessage("agentao-msg--thinking", `← sub-agent done: ${data.agent} (${data.state})`);
 
 
 
@@ -9532,7 +9627,7 @@
 
 
 
-        // TURN_END 由 CHAT_TURN_END 单独处理，这里不重复
+        // TURN_END 閻?CHAT_TURN_END 閸楁洜瀚径鍕倞閿涘矁绻栭柌灞肩瑝闁插秴顦?
 
 
 
@@ -9644,7 +9739,7 @@
 
 
 
-        // 未知事件类型静默忽略（SKILL_ACTIVATED / MEMORY_WRITE 等）
+        // 閺堫亞鐓℃禍瀣╂缁鐎烽棃娆撶帛韫囩晫鏆愰敍鍦獽ILL_ACTIVATED / MEMORY_WRITE 缁涘绱?
 
 
 
@@ -9784,7 +9879,7 @@
 
 
 
-  // ── 权限确认弹层 ─────────────────────────────────────────
+  // 閳光偓閳光偓 閺夊啴妾虹涵顔款吇瀵懓鐪?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -10036,7 +10131,7 @@
 
 
 
-    // 参考 claw-in-chrome：权限弹层显示时隐藏底部思考指示器
+    // 閸欏倽鈧?claw-in-chrome閿涙碍娼堥梽鎰剨鐏炲倹妯夌粈鐑樻闂呮劘妫屾惔鏇㈠劥閹繆鈧啯瀵氱粈鍝勬珤
     if (els.thinking) {
       els.thinking.classList.add("agentao-thinking--hidden");
     }
@@ -10180,7 +10275,7 @@
 
 
 
-    // 参考 claw-in-chrome：权限弹层关闭后，若回合仍在跑则恢复思考指示器
+    // 閸欏倽鈧?claw-in-chrome閿涙碍娼堥梽鎰剨鐏炲倸鍙ч梻顓炴倵閿涘矁瀚㈤崶鐐叉値娴犲秴婀捄鎴濆灟閹垹顦查幀婵娾偓鍐╁瘹缁€鍝勬珤
     if (state.running && els.thinking) {
       els.messages.appendChild(els.thinking);
       els.thinking.classList.remove("agentao-thinking--hidden");
@@ -10521,7 +10616,7 @@
 
 
 
-  // ── ask_user 弹层 ────────────────────────────────────────
+  // 閳光偓閳光偓 ask_user 瀵懓鐪?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -11753,7 +11848,7 @@
 
 
 
-  // ── 宿主状态 ─────────────────────────────────────────────
+  // 閳光偓閳光偓 鐎瑰じ瀵岄悩鑸碘偓?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -12222,7 +12317,7 @@
 
 
 
-    // disconnected 时若有 error detail，放到 title 供悬停查看
+    // disconnected 閺冩儼瀚㈤張?error detail閿涘本鏂侀崚?title 娓氭稒鍋撻崑婊勭叀閻?
 
 
 
@@ -12339,7 +12434,7 @@
 
 
 
-  // ── 发送消息 ─────────────────────────────────────────────
+  // 閳光偓閳光偓 閸欐垿鈧焦绉烽幁?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -13091,7 +13186,7 @@
 
 
 
-  // ── 输入框自动调整高度 ───────────────────────────────────
+  // 閳光偓閳光偓 鏉堟挸鍙嗗鍡氬殰閸斻劏鐨熼弫鎾彯鎼?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -13287,7 +13382,7 @@
 
 
 
-  // ── 事件绑定 ─────────────────────────────────────────────
+  // 閳光偓閳光偓 娴滃娆㈢紒鎴濈暰 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -13703,7 +13798,7 @@
 
 
 
-  // 权限弹层按钮
+  // 閺夊啴妾哄鐟扮湴閹稿鎸?
 
 
 
@@ -13927,7 +14022,7 @@
 
 
 
-  // ask_user 弹层按钮
+  // ask_user 瀵懓鐪伴幐澶愭尦
 
 
 
@@ -14487,7 +14582,7 @@
 
 
 
-  // 接收 service worker 消息
+  // 閹恒儲鏁?service worker 濞戝牊浼?
 
 
 
@@ -14740,6 +14835,7 @@
 
 
       case MSG.CHAT_TURN_END:
+        finalizeThinkingBlock();
 
 
 
@@ -14795,7 +14891,7 @@
 
 
 
-          // 宿主直接给了最终文本（非流式场景）
+          // 鐎瑰じ瀵岄惄瀛樺复缂佹瑤绨￠張鈧紒鍫熸瀮閺堫剨绱欓棃鐐寸ウ瀵繐婧€閺咁垽绱?
 
 
 
@@ -14879,7 +14975,7 @@
 
 
 
-          block.textContent = msg.finalText;
+          block.innerHTML = renderMarkdown(msg.finalText);
 
 
 
@@ -15020,6 +15116,7 @@
 
 
         endTurn();
+        saveCurrentSession();
 
 
 
@@ -15595,7 +15692,7 @@
 
 
 
-        // 连接错误由 HOST_STATUS_CHANGED 更新状态指示器，不追加到聊天区。
+        // 鏉╃偞甯撮柨娆掝嚖閻?HOST_STATUS_CHANGED 閺囧瓨鏌婇悩鑸碘偓浣瑰瘹缁€鍝勬珤閿涘奔绗夋潻钘夊閸掓媽浜版径鈺佸隘閵?
 
 
 
@@ -15603,7 +15700,7 @@
 
 
 
-        // appendError 会永久写入 DOM 且不可清除，重连循环会导致错误不断累积。
+        // appendError 娴兼碍妗堟稊鍛晸閸?DOM 娑撴柧绗夐崣顖涚闂勩倧绱濋柌宥堢箾瀵邦亞骞嗘导姘嚤閼锋挳鏁婄拠顖欑瑝閺傤厾鐤粔顖樷偓?
 
 
 
@@ -15699,7 +15796,7 @@
 
 
 
-        // service worker 探测 sidepanel 存活
+        // service worker 閹恒垺绁?sidepanel 鐎涙ɑ妞?
 
 
 
@@ -15923,7 +16020,7 @@
 
 
 
-  // 通知 service worker sidepanel 已打开
+  // 闁氨鐓?service worker sidepanel 瀹稿弶澧﹀鈧?
 
 
 
@@ -15971,7 +16068,7 @@
 
 
 
-  // 查询当前宿主连接状态：service worker 可能在 sidepanel 打开前就已连上宿主，
+  // 閺屻儴顕楄ぐ鎾冲鐎瑰じ瀵屾潻鐐村复閻樿埖鈧緤绱皊ervice worker 閸欘垵鍏橀崷?sidepanel 閹垫挸绱戦崜宥呮皑瀹歌尪绻涙稉濠傤問娑撲紮绱?
 
 
 
@@ -15987,7 +16084,7 @@
 
 
 
-  // 此时不会触发 HOST_STATUS_CHANGED 事件，需要主动查询以同步状态指示器。
+  // 濮濄倖妞傛稉宥勭窗鐟欙箑褰?HOST_STATUS_CHANGED 娴滃娆㈤敍宀勬付鐟曚椒瀵岄崝銊︾叀鐠囶澀浜掗崥灞绢劄閻樿埖鈧焦瀵氱粈鍝勬珤閵?
 
 
 
@@ -16135,7 +16232,7 @@
 
 
 
-  // 页面卸载时通知
+  // 妞ょ敻娼伴崡姝屾祰閺冨爼鈧氨鐓?
 
 
 
@@ -16331,7 +16428,7 @@
 
 
 
-  // ── 设置页入口 ───────────────────────────────────────────
+  // 閳光偓閳光偓 鐠佸墽鐤嗘い闈涘弳閸?閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 
 
 
@@ -16451,6 +16548,200 @@
 
 
 
+
+  // ── Session management ──────────────────────────────────────
+  var SESSIONS_KEY = "agentaoSessionList";
+  var SESSION_DATA_PREFIX = "agentao.session.data.";
+
+  function getSessionList() {
+    return new Promise(function(resolve) {
+      chrome.storage.local.get([SESSIONS_KEY], function(result) {
+        resolve(result[SESSIONS_KEY] || []);
+      });
+    });
+  }
+
+  function saveSessionList(list) {
+    return new Promise(function(resolve) {
+      var obj = {};
+      obj[SESSIONS_KEY] = list;
+      chrome.storage.local.set(obj, function() { resolve(); });
+    });
+  }
+
+  function saveCurrentSession() {
+    if (!state.sessionId) return Promise.resolve();
+    var messages = [];
+    els.messages.querySelectorAll(".agentao-msg").forEach(function(el) {
+      if (el.classList.contains("agentao-msg--user")) {
+        messages.push({ role: "user", text: el.textContent });
+      } else if (el.classList.contains("agentao-msg--assistant")) {
+        messages.push({ role: "assistant", text: el.innerHTML });
+      } else if (el.classList.contains("agentao-msg--tool")) {
+        var name = el.querySelector(".agentao-tool-header");
+        messages.push({ role: "tool", text: name ? name.textContent : "tool" });
+      } else if (el.classList.contains("agentao-msg--thinking")) {
+        var body = el.querySelector(".agentao-thinking-body");
+        messages.push({ role: "thinking", text: body ? body.textContent : "" });
+      } else if (el.classList.contains("agentao-msg--error")) {
+        messages.push({ role: "error", text: el.textContent });
+      }
+    });
+    if (messages.length === 0) return Promise.resolve();
+
+    var firstUser = messages.find(function(m) { return m.role === "user"; });
+    var title = firstUser ? firstUser.text.slice(0, 40) : "Chat";
+    var sessionData = { id: state.sessionId, title: title, messages: messages, ts: Date.now() };
+
+    return getSessionList().then(function(list) {
+      var existing = list.findIndex(function(s) { return s.id === state.sessionId; });
+      if (existing >= 0) {
+        list[existing].title = title;
+        list[existing].ts = Date.now();
+      } else {
+        list.unshift({ id: state.sessionId, title: title, ts: Date.now() });
+      }
+      if (list.length > 50) list = list.slice(0, 50);
+      var promises = [saveSessionList(list)];
+      var dataObj = {};
+      dataObj[SESSION_DATA_PREFIX + state.sessionId] = sessionData;
+      promises.push(new Promise(function(resolve) { chrome.storage.local.set(dataObj, function() { resolve(); }); }));
+      return Promise.all(promises);
+    });
+  }
+
+  function loadSessionList() {
+    return getSessionList().then(function(list) {
+      if (!els.sessionsList) return;
+      els.sessionsList.innerHTML = "";
+      if (list.length === 0) {
+        var empty = document.createElement("div");
+        empty.className = "agentao-sessions-empty";
+        empty.textContent = globalThis.__AIC_I18N__?.getMessage("noSessions") || "No recent chats";
+        els.sessionsList.appendChild(empty);
+        return;
+      }
+      list.forEach(function(s) {
+        var item = document.createElement("div");
+        item.className = "agentao-session-item";
+        if (s.id === state.sessionId) item.classList.add("agentao-session-item--active");
+        var titleEl = document.createElement("div");
+        titleEl.className = "agentao-session-title";
+        titleEl.textContent = s.title || "Chat";
+        var timeEl = document.createElement("div");
+        timeEl.className = "agentao-session-time";
+        var d = new Date(s.ts);
+        timeEl.textContent = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+        var delBtn = document.createElement("button");
+        delBtn.className = "agentao-session-del";
+        delBtn.textContent = "\u00d7";
+        delBtn.title = globalThis.__AIC_I18N__?.getMessage("delete") || "Delete";
+        delBtn.addEventListener("click", function(e) { e.stopPropagation(); deleteSession(s.id); });
+        item.appendChild(titleEl);
+        item.appendChild(timeEl);
+        item.appendChild(delBtn);
+        item.addEventListener("click", function() { switchToSession(s.id); });
+        els.sessionsList.appendChild(item);
+      });
+    });
+  }
+
+  function switchToSession(sessionId) {
+    return new Promise(function(resolve) {
+      chrome.storage.local.get([SESSION_DATA_PREFIX + sessionId], function(result) {
+        var data = result[SESSION_DATA_PREFIX + sessionId];
+        if (!data) { resolve(); return; }
+        // Save current session first
+        saveCurrentSession().then(function() {
+          state.sessionId = sessionId;
+          // Clear messages
+          els.messages.innerHTML = "";
+          // Re-add thinking indicator
+          if (els.thinking) els.messages.appendChild(els.thinking);
+          // Render saved messages
+          data.messages.forEach(function(m) {
+            if (m.role === "user") {
+              renderUserMessage(m.text);
+            } else if (m.role === "assistant") {
+              var block = document.createElement("div");
+              block.className = "agentao-msg agentao-msg--assistant";
+              block.innerHTML = m.text;
+              els.messages.appendChild(block);
+            } else if (m.role === "tool") {
+              appendMessage("agentao-msg--tool", m.text);
+            } else if (m.role === "thinking") {
+              appendMessage("agentao-msg--thinking", m.text);
+            } else if (m.role === "error") {
+              appendMessage("agentao-msg--error", m.text);
+            }
+          });
+          scrollToBottom();
+          toggleSessionsPanel(false);
+          loadSessionList();
+          // Send conversation history to the native host so the agent has context
+          var historyMessages = data.messages
+            .filter(function(m) { return m.role === "user" || m.role === "assistant"; })
+            .map(function(m) { return { role: m.role, content: m.role === "assistant" ? m.text.replace(/<[^>]+>/g, "") : m.text }; });
+          chrome.runtime.sendMessage({
+            type: MSG.RESTORE_HISTORY,
+            sessionId: sessionId,
+            messages: historyMessages,
+          });
+          resolve();
+        }).catch(function(err) { console.error("[agentao] switchToSession error:", err); resolve(); });
+      });
+    });
+  }
+
+  function deleteSession(sessionId) {
+    getSessionList().then(function(list) {
+      var newList = list.filter(function(s) { return s.id !== sessionId; });
+      var promises = [saveSessionList(newList)];
+      var delObj = {};
+      delObj[SESSION_DATA_PREFIX + sessionId] = null;
+      promises.push(new Promise(function(resolve) { chrome.storage.local.remove(SESSION_DATA_PREFIX + sessionId, function() { resolve(); }); }));
+      return Promise.all(promises);
+    }).then(function() { loadSessionList(); });
+  }
+
+  function startNewSession() {
+    saveCurrentSession().then(function() {
+      state.sessionId = generateSessionId();
+      state.currentAssistantText = "";
+      state.currentThinkingText = "";
+      state.thinkingBlock = null;
+      els.messages.innerHTML = "";
+      if (els.thinking) els.messages.appendChild(els.thinking);
+      var empty = document.createElement("div");
+      empty.className = "agentao-empty";
+      empty.setAttribute("data-i18n", "emptyHint");
+      empty.textContent = globalThis.__AIC_I18N__?.getMessage("emptyHint") || "Agentao is ready. Type a message below to start.";
+      els.messages.appendChild(empty);
+      toggleSessionsPanel(false);
+      loadSessionList();
+      // Clear agent conversation history for the new session
+      chrome.runtime.sendMessage({
+        type: MSG.RESTORE_HISTORY,
+        sessionId: state.sessionId,
+        messages: [],
+      });
+      els.input.focus();
+    }).catch(function(err) { console.error("[agentao] startNewSession error:", err); });
+  }
+
+  function toggleSessionsPanel(force) {
+    if (!els.sessionsPanel) return;
+    var isHidden = els.sessionsPanel.classList.contains("agentao-sessions-panel--hidden");
+    var show = force !== undefined ? force : isHidden;
+    if (show) {
+      els.sessionsPanel.classList.remove("agentao-sessions-panel--hidden");
+      loadSessionList();
+    } else {
+      els.sessionsPanel.classList.add("agentao-sessions-panel--hidden");
+    }
+  }
+
+
   async function refreshSetupBanner() {
 
 
@@ -16471,7 +16762,7 @@
 
 
 
-    // 检测是否已配置供应商（有 API Key 即视为已配置）
+    // 濡偓濞村妲搁崥锕€鍑￠柊宥囩枂娓氭稑绨查崯鍡礄閺?API Key 閸楀疇顫嬫稉鍝勫嚒闁板秶鐤嗛敍?
 
 
 
@@ -16892,6 +17183,19 @@
 
 
     els.openSettings.addEventListener("click", openSettings);
+  if (els.sessionsBtn) {
+    els.sessionsBtn.addEventListener("click", function(e) { e.stopPropagation(); toggleSessionsPanel(); });
+  }
+  if (els.newChatBtn) {
+    els.newChatBtn.addEventListener("click", startNewSession);
+  }
+  document.addEventListener("click", function(e) {
+    if (els.sessionsPanel && !els.sessionsPanel.classList.contains("agentao-sessions-panel--hidden")) {
+      if (!els.sessionsPanel.contains(e.target) && !(els.sessionsBtn && els.sessionsBtn.contains(e.target))) {
+        toggleSessionsPanel(false);
+      }
+    }
+  });
 
 
 
@@ -17011,7 +17315,7 @@
 
 
 
-  // 配置变更时刷新引导条
+  // 闁板秶鐤嗛崣妯绘纯閺冭泛鍩涢弬鏉跨穿鐎靛吋娼?
 
 
 
@@ -17251,7 +17555,7 @@
 
 
 
-  // 应用 i18n
+  // 鎼存梻鏁?i18n
 
 
 
@@ -17363,7 +17667,7 @@
 
 
 
-    // 简单 i18n：从 chrome.i18n 读取，回退到 data-i18n 原文
+    // 缁犫偓閸?i18n閿涙矮绮?chrome.i18n 鐠囪褰囬敍灞芥礀闁偓閸?data-i18n 閸樼喐鏋?
 
 
 
@@ -17727,7 +18031,7 @@
 
 
 
-  // 聚焦输入框
+  // 閼辨氨鍔嶆潏鎾冲弳濡?
 
 
 
@@ -17783,7 +18087,7 @@
 
 
 
-  // 检测供应商配置，显示/隐藏引导条
+  // 濡偓濞村绶垫惔鏂挎櫌闁板秶鐤嗛敍灞炬▔缁€?闂呮劘妫屽鏇烆嚤閺?
 
 
 
@@ -17832,21 +18136,6 @@
 
 
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

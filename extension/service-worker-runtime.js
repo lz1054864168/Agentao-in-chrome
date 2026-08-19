@@ -12,56 +12,35 @@
 
 
 
-// Service Worker 可维护运行时。职责：
+// Service Worker 鍙淮鎶よ繍琛屾椂銆傝亴璐ｏ細
 
 
 
 
 
 
-// 1) 管理与 Python 原生宿主的 Native Messaging 连接（连接 / 重连 / 心跳）
+// 1) 绠＄悊涓?Python 鍘熺敓瀹夸富鐨?Native Messaging 杩炴帴锛堣繛鎺?/ 閲嶈繛 / 蹇冭烦锛?
 
 
 
 
 
 
-// 2) 在 sidepanel <-> 宿主 之间路由消息
+// 2) 鍦?sidepanel <-> 瀹夸富 涔嬮棿璺敱娑堟伅
 
 
 
 
 
 
-// 3) 管理权限确认 / ask_user 的 pending promise（按 requestId 对账）
+// 3) 绠＄悊鏉冮檺纭 / ask_user 鐨?pending promise锛堟寜 requestId 瀵硅处锛?
 
 
 
 
 
 
-// 4) 从 chrome.storage 读取配置并推送给宿主
-
-
-
-
-
-
-//
-
-
-
-
-
-
-// 参考 claw-in-chrome 的 service-worker-runtime.js 模式：通过 globalThis
-
-
-
-
-
-
-// 挂载点暴露 API，由 service-worker-loader.js 装配。
+// 4) 浠?chrome.storage 璇诲彇閰嶇疆骞舵帹閫佺粰瀹夸富
 
 
 
@@ -75,28 +54,49 @@
 
 
 
-// 设计原则：
+// 鍙傝€?claw-in-chrome 鐨?service-worker-runtime.js 妯″紡锛氶€氳繃 globalThis
 
 
 
 
 
 
-// - 所有 message type / storage key / 字段名都从 __AIC_CONTRACT__ 读取，不硬编码
+// 鎸傝浇鐐规毚闇?API锛岀敱 service-worker-loader.js 瑁呴厤銆?
 
 
 
 
 
 
-// - 宿主断连时自动重连，但指数退避
+//
 
 
 
 
 
 
-// - 权限 / ask_user 请求有超时兜底，避免 pending promise 泄漏
+// 璁捐鍘熷垯锛?
+
+
+
+
+
+
+// - 鎵€鏈?message type / storage key / 瀛楁鍚嶉兘浠?__AIC_CONTRACT__ 璇诲彇锛屼笉纭紪鐮?
+
+
+
+
+
+
+// - 瀹夸富鏂繛鏃惰嚜鍔ㄩ噸杩烇紝浣嗘寚鏁伴€€閬?
+
+
+
+
+
+
+// - 鏉冮檺 / ask_user 璇锋眰鏈夎秴鏃跺厹搴曪紝閬垮厤 pending promise 娉勬紡
 
 
 
@@ -187,14 +187,14 @@
 
 
 
-  // ── NativeHostConnection ─────────────────────────────────────────────
+  // 鈹€鈹€ NativeHostConnection 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 
 
 
 
 
-  // 封装 chrome.runtime.Port，处理连接生命周期与入站消息分发。
+  // 灏佽 chrome.runtime.Port锛屽鐞嗚繛鎺ョ敓鍛藉懆鏈熶笌鍏ョ珯娑堟伅鍒嗗彂銆?
 
 
 
@@ -719,23 +719,23 @@
 
 
 
-      // connectNative 成功即视为 connecting -> connected；
+      // connectNative 鎴愬姛鍗宠涓?connecting -> connected锛?
 
 
 
 
 
 
-      // 宿主会随后发送 ready 消息，但端口建立本身就可发消息了。
+      // 瀹夸富浼氶殢鍚庡彂閫?ready 娑堟伅锛屼絾绔彛寤虹珛鏈韩灏卞彲鍙戞秷鎭簡銆?
 
 
 
 
 
 
-      // connectNative 成功：端口已建立，但保持 "connecting" 状态。
-      // 等 host 发回 LLM_STATUS "ok" 后才设为 "connected"。
-      // READY 消息也会兜底设为 connected（兼容旧版 host）。
+      // connectNative 鎴愬姛锛氱鍙ｅ凡寤虹珛锛屼絾淇濇寔 "connecting" 鐘舵€併€?
+      // 绛?host 鍙戝洖 LLM_STATUS "ok" 鍚庢墠璁句负 "connected"銆?
+      // READY 娑堟伅涔熶細鍏滃簳璁句负 connected锛堝吋瀹规棫鐗?host锛夈€?
 
 
 
@@ -1001,7 +1001,7 @@
 
 
 
-      // 指数退避：1s, 2s, 4s, 8s, ... 上限 30s
+      // 鎸囨暟閫€閬匡細1s, 2s, 4s, 8s, ... 涓婇檺 30s
 
 
 
@@ -1064,14 +1064,14 @@
 
 
 
-  // ── ServiceWorkerRuntime ─────────────────────────────────────────────
+  // 鈹€鈹€ ServiceWorkerRuntime 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 
 
 
 
 
-  // 装配 sidepanel <-> 宿主 的消息路由与 pending promise 管理。
+  // 瑁呴厤 sidepanel <-> 瀹夸富 鐨勬秷鎭矾鐢变笌 pending promise 绠＄悊銆?
 
 
 
@@ -1134,7 +1134,7 @@
 
 
 
-      this._activeTabId = null; // 当前打开 sidepanel 的 tab
+      this._activeTabId = null; // 褰撳墠鎵撳紑 sidepanel 鐨?tab
 
 
 
@@ -1149,7 +1149,7 @@
 
 
 
-      this._requestTimeoutMs = 60000; // 权限 / ask_user 超时
+      this._requestTimeoutMs = 60000; // 鏉冮檺 / ask_user 瓒呮椂
 
 
 
@@ -1246,7 +1246,7 @@
 
 
 
-        return true; // 异步响应
+        return true; // 寮傛鍝嶅簲
 
 
 
@@ -1267,7 +1267,7 @@
 
 
 
-      // action 点击打开 sidepanel
+      // action 鐐瑰嚮鎵撳紑 sidepanel
 
 
 
@@ -1302,7 +1302,7 @@
 
 
 
-      // 快捷键
+      // 蹇嵎閿?
 
 
 
@@ -1365,7 +1365,7 @@
 
 
 
-      // Service Worker 启动时尝试连接宿主
+      // Service Worker 鍚姩鏃跺皾璇曡繛鎺ュ涓?
 
 
 
@@ -1428,7 +1428,7 @@
 
 
 
-      // 把当前标签加入名为 Agentao 的标签组，与 claw-in-chrome 行为一致
+      // 鎶婂綋鍓嶆爣绛惧姞鍏ュ悕涓?Agentao 鐨勬爣绛剧粍锛屼笌 claw-in-chrome 琛屼负涓€鑷?
 
 
 
@@ -1505,7 +1505,7 @@
 
 
 
-          // 已在任意组中则不重复操作
+          // 宸插湪浠绘剰缁勪腑鍒欎笉閲嶅鎿嶄綔
 
 
 
@@ -1652,7 +1652,7 @@
 
 
 
-        // 切换：已打开则关闭靠 sidePanel API 自身行为，这里只重新打开
+        // 鍒囨崲锛氬凡鎵撳紑鍒欏叧闂潬 sidePanel API 鑷韩琛屼负锛岃繖閲屽彧閲嶆柊鎵撳紑
 
 
 
@@ -1793,7 +1793,7 @@
 
 
 
-          // sidepanel 打开时确保宿主已连接，并推送当前配置
+          // sidepanel 鎵撳紑鏃剁‘淇濆涓诲凡杩炴帴锛屽苟鎺ㄩ€佸綋鍓嶉厤缃?
 
 
 
@@ -1933,6 +1933,15 @@
 
 
 
+          return;
+
+        case MSG.RESTORE_HISTORY:
+          this._connection.postMessage({
+            type: HOST.RESTORE_HISTORY,
+            sessionId: msg.sessionId,
+            messages: msg.messages || [],
+          });
+          sendResponse({ success: true });
           return;
 
 
@@ -2153,7 +2162,7 @@
 
 
 
-          // 未知消息类型静默忽略
+          // 鏈煡娑堟伅绫诲瀷闈欓粯蹇界暐
 
 
 
@@ -2683,9 +2692,9 @@
 
 
         case HOST.READY:
-      // 宿主启动完成，推送配置。
-      // 兜底设为 connected：兼容不发 LLM_STATUS 的旧版 host。
-      // 新版 host 会在 _rebuild_agent 后发 LLM_STATUS 覆盖此状态。
+      // 瀹夸富鍚姩瀹屾垚锛屾帹閫侀厤缃€?
+      // 鍏滃簳璁句负 connected锛氬吋瀹逛笉鍙?LLM_STATUS 鐨勬棫鐗?host銆?
+      // 鏂扮増 host 浼氬湪 _rebuild_agent 鍚庡彂 LLM_STATUS 瑕嗙洊姝ょ姸鎬併€?
       this._pushConfigToHost();
       this._connection._setStatus("connected");
       return;
@@ -3098,7 +3107,7 @@
 
 
 
-      // 转发给 sidepanel；sidepanel 会回 PERMISSION_RESPONSE
+      // 杞彂缁?sidepanel锛泂idepanel 浼氬洖 PERMISSION_RESPONSE
 
 
 
@@ -3161,7 +3170,7 @@
 
 
 
-      // 超时兜底：超时后按拒绝收口
+      // 瓒呮椂鍏滃簳锛氳秴鏃跺悗鎸夋嫆缁濇敹鍙?
 
 
 
@@ -3469,7 +3478,7 @@
 
 
 
-    // ── 浏览器工具：宿主发来 browser_request，SW 用 chrome.debugger 执行 CDP ──
+    // 鈹€鈹€ 娴忚鍣ㄥ伐鍏凤細瀹夸富鍙戞潵 browser_request锛孲W 鐢?chrome.debugger 鎵ц CDP 鈹€鈹€
 
 
 
@@ -4730,7 +4739,7 @@
 
 
 
-          // sidepanel 未打开时 sendMessage 会失败，静默忽略
+          // sidepanel 鏈墦寮€鏃?sendMessage 浼氬け璐ワ紝闈欓粯蹇界暐
 
 
 
@@ -4751,7 +4760,7 @@
 
 
 
-        // 忽略
+        // 蹇界暐
 
 
 
@@ -4835,14 +4844,14 @@
 
 
 
-  // ── 装配 ─────────────────────────────────────────────────────────────
+  // 鈹€鈹€ 瑁呴厤 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 
 
 
 
 
-  // 暴露到 globalThis，供 service-worker-loader.js 使用。
+  // 鏆撮湶鍒?globalThis锛屼緵 service-worker-loader.js 浣跨敤銆?
 
 
 

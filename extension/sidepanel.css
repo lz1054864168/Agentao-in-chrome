@@ -437,11 +437,7 @@ body {
 
 
   height: 100vh;
-
-
-
-
-
+  position: relative;
 }
 
 
@@ -1763,7 +1759,7 @@ body {
 
 
 
-  padding: 1px 6px;
+  padding: 0 2px;
 
 
 
@@ -1775,13 +1771,25 @@ body {
 
 
 
-  font-size: 11px;
+  font-size: 12px;
+
+
+
+
+
+  font-weight: 700;
 
 
 
 
 
   margin-left: 6px;
+
+
+
+
+
+  vertical-align: baseline;
 
 
 
@@ -1805,13 +1813,13 @@ body {
 
 
 
-  background: var(--aic-success);
+  background: transparent;
 
 
 
 
 
-  color: #fff;
+  color: var(--aic-success);
 
 
 
@@ -1835,13 +1843,13 @@ body {
 
 
 
-  background: var(--aic-danger);
+  background: transparent;
 
 
 
 
 
-  color: #fff;
+  color: var(--aic-danger);
 
 
 
@@ -1865,13 +1873,13 @@ body {
 
 
 
-  background: var(--aic-text-muted);
+  background: transparent;
 
 
 
 
 
-  color: #fff;
+  color: var(--aic-text-secondary);
 
 
 
@@ -3608,3 +3616,355 @@ body {
 .agentao-header-title {
   display: none !important;
 }
+/* ── Markdown rendering inside assistant messages ─────────── */
+
+.agentao-msg--assistant {
+  white-space: normal;
+}
+
+.agentao-msg--assistant p {
+  margin: 0 0 8px 0;
+}
+
+.agentao-msg--assistant p:last-child {
+  margin-bottom: 0;
+}
+
+.agentao-msg--assistant h1,
+.agentao-msg--assistant h2,
+.agentao-msg--assistant h3,
+.agentao-msg--assistant h4,
+.agentao-msg--assistant h5,
+.agentao-msg--assistant h6 {
+  margin: 12px 0 6px 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.agentao-msg--assistant h1 { font-size: 1.4em; }
+.agentao-msg--assistant h2 { font-size: 1.25em; }
+.agentao-msg--assistant h3 { font-size: 1.1em; }
+.agentao-msg--assistant h4,
+.agentao-msg--assistant h5,
+.agentao-msg--assistant h6 { font-size: 1em; }
+
+.agentao-msg--assistant ul,
+.agentao-msg--assistant ol {
+  margin: 4px 0 8px 0;
+  padding-left: 20px;
+}
+
+.agentao-msg--assistant li {
+  margin: 2px 0;
+}
+
+.agentao-msg--assistant blockquote {
+  margin: 8px 0;
+  padding: 4px 12px;
+  border-left: 3px solid var(--aic-border);
+  color: var(--aic-text-secondary);
+}
+
+.agentao-msg--assistant hr {
+  border: none;
+  border-top: 1px solid var(--aic-border);
+  margin: 10px 0;
+}
+
+.agentao-msg--assistant .agentao-md-pre {
+  margin: 8px 0;
+  padding: 10px 12px;
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.06));
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: var(--aic-font-mono);
+  font-size: 13px;
+}
+
+.agentao-msg--assistant .agentao-md-code {
+  padding: 1px 5px;
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.06));
+  border-radius: 3px;
+  font-family: var(--aic-font-mono);
+  font-size: 13px;
+}
+
+.agentao-msg--assistant strong {
+  font-weight: 600;
+}
+
+.agentao-msg--assistant em {
+  font-style: italic;
+}
+
+.agentao-msg--assistant a {
+  color: var(--aic-accent);
+  text-decoration: none;
+}
+
+.agentao-msg--assistant a:hover {
+  text-decoration: underline;
+}
+
+/* ── Session selector dropdown ────────────────────────────── */
+
+.agentao-sessions-panel {
+  position: absolute;
+  top: 48px;
+  left: 8px;
+  right: 8px;
+  max-height: 400px;
+  background: var(--aic-bg-secondary);
+  border: 1px solid var(--aic-border);
+  border-radius: var(--aic-radius);
+  box-shadow: var(--aic-shadow-lg);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: aic-fade-in 0.15s ease;
+}
+
+.agentao-sessions-panel--hidden {
+  display: none;
+}
+
+.agentao-sessions-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--aic-border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--aic-text);
+}
+
+.agentao-sessions-new-btn {
+  background: var(--aic-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--aic-radius-sm);
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.agentao-sessions-new-btn:hover {
+  opacity: 0.85;
+}
+
+.agentao-sessions-list {
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.agentao-sessions-empty {
+  padding: 20px 14px;
+  text-align: center;
+  color: var(--aic-text-muted);
+  font-size: 13px;
+}
+
+.agentao-session-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--aic-border);
+  gap: 8px;
+}
+
+.agentao-session-item:hover {
+  background: var(--aic-accent-light);
+}
+
+.agentao-session-item--active {
+  background: var(--aic-accent-light);
+  border-left: 3px solid var(--aic-accent);
+}
+
+.agentao-session-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--aic-text);
+}
+
+.agentao-session-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--aic-text-muted);
+}
+
+.agentao-session-del {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--aic-text-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.agentao-session-del:hover {
+  background: var(--aic-danger);
+  color: #fff;
+}
+
+/* ── Markdown table styles ─────────────────────────────────── */
+
+.agentao-msg--assistant .agentao-md-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.agentao-msg--assistant .agentao-md-table th,
+.agentao-msg--assistant .agentao-md-table td {
+  border: 1px solid var(--aic-border);
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.agentao-msg--assistant .agentao-md-table th {
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.06));
+  font-weight: 600;
+}
+
+.agentao-msg--assistant .agentao-md-table tbody tr:nth-child(even) {
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.03));
+}
+
+/* ── Streaming thinking block (DSH-style collapsible) ────── */
+
+.agentao-thinking-stream {
+  align-self: flex-start;
+  max-width: 90%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--aic-radius);
+  font-size: 14px;
+  white-space: normal;
+  animation: aic-fade-in 0.2s ease;
+}
+
+.agentao-thinking-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: var(--aic-radius);
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.04));
+  transition: background 0.15s ease;
+}
+
+.agentao-thinking-header:hover {
+  background: var(--aic-bg-tertiary, rgba(0, 0, 0, 0.08));
+}
+
+.agentao-thinking-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.agentao-thinking-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--aic-text-secondary);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.agentao-thinking-dots {
+  display: inline-flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.agentao-thinking-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--aic-text-muted);
+  animation: aic-thinking-bounce 1.2s ease-in-out infinite;
+}
+
+.agentao-thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+.agentao-thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes aic-thinking-bounce {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+.agentao-thinking-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--aic-text-muted);
+  transition: transform 0.15s ease;
+}
+.agentao-thinking-stream[data-expanded="true"] .agentao-thinking-toggle {
+  transform: rotate(90deg);
+}
+
+.agentao-thinking-body {
+  display: none;
+  padding: 8px 14px;
+  color: var(--aic-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-left: 3px solid var(--aic-border);
+  margin-top: 2px;
+  margin-left: 14px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.agentao-thinking-stream[data-expanded="true"] .agentao-thinking-body {
+  display: block;
+}
+
+.agentao-thinking-done .agentao-thinking-dots {
+  display: none;
+}
+
+.agentao-thinking-done .agentao-thinking-title {
+  font-style: normal;
+  color: var(--aic-text-muted);
+}
+
+.agentao-thinking-done .agentao-thinking-header {
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agentao-thinking-dots span {
+    animation: none;
+  }
+}
+

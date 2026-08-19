@@ -64,6 +64,11 @@ class AgentaoChromeTransport(NullTransport):
         self._pending_ask_user: Dict[str, _PendingRequest[str]] = {}
         self._pending_browser: Dict[str, _PendingRequest[dict]] = {}
         self._lock = threading.Lock()
+        # Text already streamed as LLM_TEXT in the current LLM call. The
+        # runtime re-emits a tool-call message's content as a THINKING event
+        # (chat_loop/_runner.py), which would duplicate text the sidepanel
+        # already rendered from the live stream.
+        self._streamed_text_parts: List[str] = []
 
     # ── emit: forward every event to the extension ───────────────────
 
@@ -71,15 +76,49 @@ class AgentaoChromeTransport(NullTransport):
         # Let NullTransport's broadcaster notify subscribers (replay etc.)
         super().emit(event)
         try:
-            self._post_message(
-                {
-                    "type": HOST_TO_EXT["chat_event"],
-                    "event": _event_to_dict(event),
-                }
-            )
+            if not self._filter_duplicate_thinking(event):
+                self._post_message(
+                    {
+                        "type": HOST_TO_EXT["chat_event"],
+                        "event": _event_to_dict(event),
+                    }
+                )
         except Exception:
             # emit must not raise — swallow transport errors
             pass
+
+    def _filter_duplicate_thinking(self, event: AgentEvent) -> bool:
+        """Return True when a THINKING event duplicates streamed LLM_TEXT.
+
+        The runner emits THINKING with the full ``reasoning_content`` plus
+        the full ``content`` of tool-call messages. ``content`` was already
+        streamed chunk-by-chunk as LLM_TEXT, so forwarding it again makes
+        the UI print the same text twice. ``reasoning_content`` never goes
+        through LLM_TEXT and is always forwarded.
+        """
+        etype = getattr(event, "type", None)
+        try:
+            from agentao.transport.events import EventType
+
+            if etype == EventType.LLM_CALL_STARTED:
+                self._streamed_text_parts = []
+                return False
+            if etype == EventType.LLM_TEXT:
+                chunk = (event.data or {}).get("chunk") or ""
+                if chunk:
+                    self._streamed_text_parts.append(chunk)
+                return False
+            if etype == EventType.THINKING:
+                text = (event.data or {}).get("text") or ""
+                if not text:
+                    return False
+                streamed = "".join(self._streamed_text_parts)
+                if streamed and _is_subsequence(text, streamed):
+                    return True
+                return False
+        except Exception:
+            return False
+        return False
 
     # ── confirm_tool: round-trip to the extension ────────────────────
 
@@ -228,6 +267,21 @@ class _PendingRequest(Generic[T]):
 
 def _new_request_id() -> str:
     return uuid.uuid4().hex
+
+
+def _is_subsequence(needle: str, haystack: str) -> bool:
+    """True when every char of needle appears in haystack in order.
+
+    The runtime strips whitespace when re-emitting THINKING text but the
+    streamed chunks keep it, so a plain ``in`` containment fails. A
+    subsequence check on normalized text tolerates that drift.
+    """
+    n = "".join(needle.split())
+    h = "".join(haystack.split())
+    if not n:
+        return True
+    it = iter(h)
+    return all(ch in it for ch in n)
 
 
 def _event_to_dict(event: AgentEvent) -> Dict[str, Any]:

@@ -1,1222 +1,1224 @@
-// agentao-contract.js
-
-
-
-
-
-//
-
-
-
-
-
-// 冻结契约：扩展内所有 message type / storage key / 字段名 / DOM id 的唯一来源。
-
-
-
-
-
-// 参考 claw-in-chrome 的 claw-contract.js 模式：deepFreeze + globalThis 挂载点，
-
-
-
-
-
-// 新增契约只能增量追加，不得破坏既有字段语义。
-
-
-
-
-
-//
-
-
-
-
-
-// 宿主侧 (native-host/host_protocol.py) 必须镜像本文件的常量。
-
-
-
-
-
-// 两侧通过 JSON over Native Messaging 通信，字段名以本文件为准。
-
-
-
-
-
-
-
-
-
-
-
-(function () {
-
-
-
-
-
-  if (globalThis.__AIC_CONTRACT__) {
-
-
-
-
-
-    return;
-
-
-
-
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-  function deepFreeze(value) {
-
-
-
-
-
-    if (!value || typeof value !== "object" || Object.isFrozen(value)) {
-
-
-
-
-
-      return value;
-
-
-
-
-
-    }
-
-
-
-
-
-    Object.freeze(value);
-
-
-
-
-
-    for (const child of Object.values(value)) {
-
-
-
-
-
-      deepFreeze(child);
-
-
-
-
-
-    }
-
-
-
-
-
-    return value;
-
-
-
-
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-  const contract = {
-
-
-
-
-
-    version: 1,
-
-
-
-
-
-
-
-
-
-
-
-    // ── Native Messaging ────────────────────────────────────────────────
-
-
-
-
-
-    nativeMessaging: {
-
-
-
-
-
-      // 宿主名必须与 native-host/agentao_chrome_host.json 中的 name 一致，
-
-
-
-
-
-      // 且与 scripts/install_native_host.py 注册到 Chrome 的名字一致。
-
-
-
-
-
-      HOST_NAME: "com.agentao.chrome_extension",
-
-
-
-
-
-      // 绑定上报：扩展首次 connectNative 时发送一条 binding_hello，
-
-
-
-
-
-      // 让宿主知道是哪个浏览器实例、哪个扩展版本在连接。
-
-
-
-
-
-      BINDING_TYPE: "binding_hello",
-
-
-
-
-
-      BINDING_PROTOCOL_VERSION: 1,
-
-
-
-
-
-      BINDING_INSTANCE_ID_STORAGE_KEY: "agentao.nativeHostBinding.instanceId.v1",
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── 模型供应商配置（写入 chrome.storage.local，宿主启动时读取）─────
-
-
-
-
-
-    provider: {
-
-
-
-
-
-      STORAGE_KEY: "agentaoProviderConfig",
-
-
-
-
-
-      ACTIVE_PROFILE_STORAGE_KEY: "agentaoProviderActiveProfileId",
-
-
-
-
-
-      PROFILES_STORAGE_KEY: "agentaoProviderProfiles",
-
-
-
-
-
-      // 单个 profile 的字段名
-
-
-
-
-
-      FIELDS: {
-
-
-
-
-
-        ID: "id",
-
-
-
-
-
-        NAME: "name",
-
-
-
-
-
-        FORMAT: "format",
-
-
-
-
-
-        BASE_URL: "baseUrl",
-
-
-
-
-
-        API_KEY: "apiKey",
-
-
-
-
-
-        MODEL: "model",
-
-
-
-
-
-        TEMPERATURE: "temperature",
-
-
-
-
-
-
-
-
-        MAX_TOKENS: "maxTokens",
-
-
-
-
-
-
-
-
-        // 是否为多模态模型（支持图像输入）。关闭时宿主不注册截图等
-
-
-        // 需要视觉能力的工具，避免向非多模态模型发送图像。
-
-
-        VISION: "vision",
-
-
-
-
-
-
-
-
-      },
-
-
-
-
-      // 供应商格式：agentao 的 LLMClient 走 OpenAI 兼容协议，
-
-
-
-
-
-      // 但保留 format 字段以便未来扩展 Anthropic / Gemini 原生协议。
-
-
-
-
-
-      FORMATS: {
-
-
-
-
-
-        OPENAI: "openai",
-
-
-
-
-
-        ANTHROPIC: "anthropic",
-
-
-
-
-
-      },
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── 权限模式（镜像 agentao.permissions.PermissionMode）──────────────
-
-
-
-
-
-    permission: {
-
-
-
-
-
-      MODES: {
-
-
-
-
-
-        READ_ONLY: "read-only",
-
-
-
-
-
-        WORKSPACE_WRITE: "workspace-write",
-
-
-
-
-
-        FULL_ACCESS: "full-access",
-
-
-
-
-
-        PLAN: "plan",
-
-
-
-
-
-      },
-
-
-
-
-
-      MODE_STORAGE_KEY: "agentaoPermissionMode",
-
-
-
-
-
-      AUTO_APPROVE_STORAGE_KEY: "agentaoAutoApproveTools",
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── 会话 ────────────────────────────────────────────────────────────
-
-
-
-
-
-    session: {
-
-
-
-
-
-      ACTIVE_SESSION_ID_STORAGE_KEY: "agentaoActiveSessionId",
-
-
-
-
-
-      WORKING_DIRECTORY_STORAGE_KEY: "agentaoWorkingDirectory",
-
-
-
-
-
-      // 会话历史按 sessionId 分片存储，避免单 key 过大
-
-
-
-
-
-      HISTORY_KEY_PREFIX: "agentao.session.history.",
-
-
-
-
-
-      HISTORY_LIMIT: 200,
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── UI 偏好 ─────────────────────────────────────────────────────────
-
-
-
-    ui: {
-
-
-
-      PREFERRED_LOCALE_STORAGE_KEY: "agentaoPreferredLocale",
-
-
-
-      THEME_STORAGE_KEY: "agentaoTheme",
-
-
-
-      DEBUG_MODE_STORAGE_KEY: "agentaoDebugMode",
-
-
-
-      THEMES: {
-
-
-
-        LIGHT: "light",
-
-
-
-        DARK: "dark",
-
-
-
-        AUTO: "auto",
-
-
-
-      },
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-    // ── 扩展内部 runtime.onMessage 消息类型 ─────────────────────────────
-
-
-
-
-
-    messages: {
-
-
-
-
-
-      // sidepanel <-> service worker
-
-
-
-
-
-      PANEL_OPENED: "PANEL_OPENED",
-
-
-
-
-
-      PANEL_CLOSED: "PANEL_CLOSED",
-
-
-
-
-
-      PING_SIDEPANEL: "PING_SIDEPANEL",
-
-
-
-
-
-      OPEN_SIDE_PANEL: "OPEN_SIDE_PANEL",
-
-
-
-
-
-      POPULATE_INPUT_TEXT: "POPULATE_INPUT_TEXT",
-
-
-
-
-
-      STOP_AGENT: "STOP_AGENT",
-
-
-
-
-
-
-
-
-
-
-
-      // service worker <-> sidepanel: 原生宿主状态
-
-
-
-
-
-      GET_HOST_STATUS: "GET_HOST_STATUS",   // sidepanel/options -> SW: 查询当前宿主连接状态
-
-
-
-
-
-      HOST_STATUS_CHANGED: "HOST_STATUS_CHANGED",
-
-
-
-
-
-      HOST_CONNECTING: "HOST_CONNECTING",
-
-
-
-
-
-      HOST_CONNECTED: "HOST_CONNECTED",
-
-
-
-
-
-      HOST_DISCONNECTED: "HOST_DISCONNECTED",
-
-
-
-
-
-      HOST_ERROR: "HOST_ERROR",
-    // LLM 可用性状态变更（SW -> sidepanel/options）
-    // status: "ok" | "error", detail?: string
-    LLM_STATUS_CHANGED: "LLM_STATUS_CHANGED",
-
-
-
-
-
-
-
-
-
-
-
-      // service worker <-> sidepanel: 对话
-
-
-
-
-
-      CHAT_SEND: "CHAT_SEND",           // sidepanel -> SW: 发送用户消息
-
-
-
-
-
-      CHAT_CANCEL: "CHAT_CANCEL",       // sidepanel -> SW: 取消当前回合
-
-
-
-
-
-      CHAT_EVENT: "CHAT_EVENT",         // SW -> sidepanel: 转发宿主事件
-
-
-
-
-
-      CHAT_TURN_END: "CHAT_TURN_END",   // SW -> sidepanel: 回合结束
-
-
-
-
-
-      CHAT_ERROR: "CHAT_ERROR",         // SW -> sidepanel: 错误
-
-
-
-
-
-
-
-
-
-
-
-      // 权限确认（宿主 -> SW -> sidepanel -> SW -> 宿主）
-
-
-
-
-
-      PERMISSION_REQUEST: "PERMISSION_REQUEST",
-
-
-
-
-
-      PERMISSION_RESPONSE: "PERMISSION_RESPONSE",
-
-
-
-
-
-
-
-
-
-
-
-      // ask_user（宿主 -> SW -> sidepanel -> SW -> 宿主）
-
-
-
-
-
-      ASK_USER_REQUEST: "ASK_USER_REQUEST",
-
-
-
-
-
-      ASK_USER_RESPONSE: "ASK_USER_RESPONSE",
-
-
-
-
-
-
-
-
-
-
-
-      // 浏览器工具（宿主 -> SW 直接执行 CDP -> SW -> 宿主，不经 sidepanel）
-
-
-
-
-
-      BROWSER_REQUEST: "BROWSER_REQUEST",
-
-
-
-
-
-
-
-
-
-
-
-      // 配置变更
-
-
-
-
-
-      CONFIG_UPDATED: "CONFIG_UPDATED",
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── 原生宿主消息类型（扩展 <-> 宿主，over Native Messaging）─────────
-
-
-
-
-
-    // 这些是 JSON 消息的 "type" 字段值，两侧必须一致。
-
-
-
-
-
-    host: {
-
-
-
-
-
-      // 扩展 -> 宿主
-
-
-
-
-
-      BINDING_HELLO: "binding_hello",
-
-
-
-
-
-      CHAT: "chat",                     // { prompt, sessionId, images?, attachments? }
-
-
-
-
-
-      CHAT_CANCEL: "chat_cancel",       // { sessionId }
-
-
-
-
-
-      CONFIG: "config",                 // { provider, permissionMode, workingDirectory }
-
-
-
-
-
-      PERMISSION_RESPONSE: "permission_response",  // { requestId, allowed }
-
-
-
-
-
-      ASK_USER_RESPONSE: "ask_user_response",      // { requestId, answer }
-
-
-
-
-
-      BROWSER_RESPONSE: "browser_response",        // { requestId, response }
-
-
-
-
-
-      SHUTDOWN: "shutdown",
-
-
-
-
-
-
-
-
-
-
-
-      // 宿主 -> 扩展
-
-
-
-
-
-      READY: "ready",                   // 宿主启动完成
-
-
-
-
-
-      CHAT_EVENT: "chat_event",         // 转发 agentao AgentEvent
-
-
-
-
-
-      TURN_END: "turn_end",             // { sessionId, finalText, status, ... }
-
-
-
-
-
-      ERROR: "error",                   // { message, detail? }
-
-
-
-
-
-      PERMISSION_REQUEST: "permission_request",  // { requestId, toolName, description, args }
-
-
-
-
-
-      ASK_USER_REQUEST: "ask_user_request",      // { requestId, question, header?, options?, ... }
-
-
-
-
-
-      BROWSER_REQUEST: "browser_request",        // { requestId, action, params }
-
-
-
-
-
-      LOG: "log",                       // { level, message }
-    LLM_STATUS: "llm_status",     // { status: "ok"|"error", detail? }
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── agentao 事件类型（镜像 agentao.transport.events.EventType）──────
-
-
-
-
-
-    // 宿主把 AgentEvent.type 原样透传，扩展按这些值渲染。
-
-
-
-
-
-    agentEvents: {
-
-
-
-
-
-      TURN_START: "turn_start",
-
-
-
-
-
-      TURN_BEGIN: "turn_begin",
-
-
-
-
-
-      TURN_END: "turn_end",
-
-
-
-
-
-      TOOL_START: "tool_start",
-
-
-
-
-
-      TOOL_OUTPUT: "tool_output",
-
-
-
-
-
-      TOOL_COMPLETE: "tool_complete",
-
-
-
-
-
-      TOOL_RESULT: "tool_result",
-
-
-
-
-
-      THINKING: "thinking",
-
-
-
-
-
-      LLM_TEXT: "llm_text",
-
-
-
-
-
-      LLM_CALL_STARTED: "llm_call_started",
-
-
-
-
-
-      LLM_CALL_COMPLETED: "llm_call_completed",
-
-
-
-
-
-      ERROR: "error",
-
-
-
-
-
-      AGENT_START: "agent_start",
-
-
-
-
-
-      AGENT_END: "agent_end",
-
-
-
-
-
-      TOOL_CONFIRMATION: "tool_confirmation",
-
-
-
-
-
-      SKILL_ACTIVATED: "skill_activated",
-
-
-
-
-
-      SKILL_DEACTIVATED: "skill_deactivated",
-
-
-
-
-
-      MEMORY_WRITE: "memory_write",
-
-
-
-
-
-      MODEL_CHANGED: "model_changed",
-
-
-
-
-
-      PERMISSION_MODE_CHANGED: "permission_mode_changed",
-
-
-
-
-
-    },
-
-
-
-
-
-
-
-
-
-
-
-    // ── DOM id（sidepanel / options 内部）──────────────────────────────
-
-
-
-
-
-    dom: {
-
-
-
-
-
-      SIDEPANEL_ROOT: "agentao-root",
-
-
-
-
-
-      SIDEPANEL_MESSAGES: "agentao-messages",
-
-
-
-
-
-      SIDEPANEL_INPUT: "agentao-input",
-
-
-
-
-
-      SIDEPANEL_SEND_BUTTON: "agentao-send",
-
-
-
-
-
-      SIDEPANEL_STOP_BUTTON: "agentao-stop",
-
-
-
-
-
-      SIDEPANEL_STATUS: "agentao-status",
-
-
-
-
-
-      SIDEPANEL_PERMISSION_PROMPT: "agentao-permission-prompt",
-
-
-
-
-
-      SIDEPANEL_ASK_USER_PROMPT: "agentao-ask-user-prompt",
-
-
-
-      SIDEPANEL_ATTACH_BUTTON: "agentao-attach",
-
-
-
-      SIDEPANEL_FILE_INPUT: "agentao-file-input",
-
-
-
-      SIDEPANEL_ATTACHMENTS: "agentao-attachments",
-
-
-
-      OPTIONS_ROOT: "agentao-options-root",
-
-
-
-    },
-
-
-
-
-  };
-
-
-
-
-
-
-
-
-
-
-
-  globalThis.__AIC_CONTRACT__ = deepFreeze(contract);
-
-
-
-
-
-})();
-
-
-
-
-
+// agentao-contract.js
+
+
+
+
+
+//
+
+
+
+
+
+// 冻结契约：扩展内所有 message type / storage key / 字段名 / DOM id 的唯一来源。
+
+
+
+
+
+// 参考 claw-in-chrome 的 claw-contract.js 模式：deepFreeze + globalThis 挂载点，
+
+
+
+
+
+// 新增契约只能增量追加，不得破坏既有字段语义。
+
+
+
+
+
+//
+
+
+
+
+
+// 宿主侧 (native-host/host_protocol.py) 必须镜像本文件的常量。
+
+
+
+
+
+// 两侧通过 JSON over Native Messaging 通信，字段名以本文件为准。
+
+
+
+
+
+
+
+
+
+
+
+(function () {
+
+
+
+
+
+  if (globalThis.__AIC_CONTRACT__) {
+
+
+
+
+
+    return;
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  function deepFreeze(value) {
+
+
+
+
+
+    if (!value || typeof value !== "object" || Object.isFrozen(value)) {
+
+
+
+
+
+      return value;
+
+
+
+
+
+    }
+
+
+
+
+
+    Object.freeze(value);
+
+
+
+
+
+    for (const child of Object.values(value)) {
+
+
+
+
+
+      deepFreeze(child);
+
+
+
+
+
+    }
+
+
+
+
+
+    return value;
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  const contract = {
+
+
+
+
+
+    version: 1,
+
+
+
+
+
+
+
+
+
+
+
+    // ── Native Messaging ────────────────────────────────────────────────
+
+
+
+
+
+    nativeMessaging: {
+
+
+
+
+
+      // 宿主名必须与 native-host/agentao_chrome_host.json 中的 name 一致，
+
+
+
+
+
+      // 且与 scripts/install_native_host.py 注册到 Chrome 的名字一致。
+
+
+
+
+
+      HOST_NAME: "com.agentao.chrome_extension",
+
+
+
+
+
+      // 绑定上报：扩展首次 connectNative 时发送一条 binding_hello，
+
+
+
+
+
+      // 让宿主知道是哪个浏览器实例、哪个扩展版本在连接。
+
+
+
+
+
+      BINDING_TYPE: "binding_hello",
+
+
+
+
+
+      BINDING_PROTOCOL_VERSION: 1,
+
+
+
+
+
+      BINDING_INSTANCE_ID_STORAGE_KEY: "agentao.nativeHostBinding.instanceId.v1",
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── 模型供应商配置（写入 chrome.storage.local，宿主启动时读取）─────
+
+
+
+
+
+    provider: {
+
+
+
+
+
+      STORAGE_KEY: "agentaoProviderConfig",
+
+
+
+
+
+      ACTIVE_PROFILE_STORAGE_KEY: "agentaoProviderActiveProfileId",
+
+
+
+
+
+      PROFILES_STORAGE_KEY: "agentaoProviderProfiles",
+
+
+
+
+
+      // 单个 profile 的字段名
+
+
+
+
+
+      FIELDS: {
+
+
+
+
+
+        ID: "id",
+
+
+
+
+
+        NAME: "name",
+
+
+
+
+
+        FORMAT: "format",
+
+
+
+
+
+        BASE_URL: "baseUrl",
+
+
+
+
+
+        API_KEY: "apiKey",
+
+
+
+
+
+        MODEL: "model",
+
+
+
+
+
+        TEMPERATURE: "temperature",
+
+
+
+
+
+
+
+
+        MAX_TOKENS: "maxTokens",
+
+
+
+
+
+
+
+
+        // 是否为多模态模型（支持图像输入）。关闭时宿主不注册截图等
+
+
+        // 需要视觉能力的工具，避免向非多模态模型发送图像。
+
+
+        VISION: "vision",
+
+
+
+
+
+
+
+
+      },
+
+
+
+
+      // 供应商格式：agentao 的 LLMClient 走 OpenAI 兼容协议，
+
+
+
+
+
+      // 但保留 format 字段以便未来扩展 Anthropic / Gemini 原生协议。
+
+
+
+
+
+      FORMATS: {
+
+
+
+
+
+        OPENAI: "openai",
+
+
+
+
+
+        ANTHROPIC: "anthropic",
+
+
+
+
+
+      },
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── 权限模式（镜像 agentao.permissions.PermissionMode）──────────────
+
+
+
+
+
+    permission: {
+
+
+
+
+
+      MODES: {
+
+
+
+
+
+        READ_ONLY: "read-only",
+
+
+
+
+
+        WORKSPACE_WRITE: "workspace-write",
+
+
+
+
+
+        FULL_ACCESS: "full-access",
+
+
+
+
+
+        PLAN: "plan",
+
+
+
+
+
+      },
+
+
+
+
+
+      MODE_STORAGE_KEY: "agentaoPermissionMode",
+
+
+
+
+
+      AUTO_APPROVE_STORAGE_KEY: "agentaoAutoApproveTools",
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── 会话 ────────────────────────────────────────────────────────────
+
+
+
+
+
+    session: {
+
+
+
+
+
+      ACTIVE_SESSION_ID_STORAGE_KEY: "agentaoActiveSessionId",
+
+
+
+
+
+      WORKING_DIRECTORY_STORAGE_KEY: "agentaoWorkingDirectory",
+
+
+
+
+
+      // 会话历史按 sessionId 分片存储，避免单 key 过大
+
+
+
+
+
+      HISTORY_KEY_PREFIX: "agentao.session.history.",
+
+
+
+
+
+      HISTORY_LIMIT: 200,
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── UI 偏好 ─────────────────────────────────────────────────────────
+
+
+
+    ui: {
+
+
+
+      PREFERRED_LOCALE_STORAGE_KEY: "agentaoPreferredLocale",
+
+
+
+      THEME_STORAGE_KEY: "agentaoTheme",
+
+
+
+      DEBUG_MODE_STORAGE_KEY: "agentaoDebugMode",
+
+
+
+      THEMES: {
+
+
+
+        LIGHT: "light",
+
+
+
+        DARK: "dark",
+
+
+
+        AUTO: "auto",
+
+
+
+      },
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+    // ── 扩展内部 runtime.onMessage 消息类型 ─────────────────────────────
+
+
+
+
+
+    messages: {
+
+
+
+
+
+      // sidepanel <-> service worker
+
+
+
+
+
+      PANEL_OPENED: "PANEL_OPENED",
+
+
+
+
+
+      PANEL_CLOSED: "PANEL_CLOSED",
+
+
+
+
+
+      PING_SIDEPANEL: "PING_SIDEPANEL",
+
+
+
+
+
+      OPEN_SIDE_PANEL: "OPEN_SIDE_PANEL",
+
+
+
+
+
+      POPULATE_INPUT_TEXT: "POPULATE_INPUT_TEXT",
+
+
+
+
+
+      STOP_AGENT: "STOP_AGENT",
+
+
+
+
+
+
+
+
+
+
+
+      // service worker <-> sidepanel: 原生宿主状态
+
+
+
+
+
+      GET_HOST_STATUS: "GET_HOST_STATUS",   // sidepanel/options -> SW: 查询当前宿主连接状态
+
+
+
+
+
+      HOST_STATUS_CHANGED: "HOST_STATUS_CHANGED",
+
+
+
+
+
+      HOST_CONNECTING: "HOST_CONNECTING",
+
+
+
+
+
+      HOST_CONNECTED: "HOST_CONNECTED",
+
+
+
+
+
+      HOST_DISCONNECTED: "HOST_DISCONNECTED",
+
+
+
+
+
+      HOST_ERROR: "HOST_ERROR",
+    // LLM 可用性状态变更（SW -> sidepanel/options）
+    // status: "ok" | "error", detail?: string
+    LLM_STATUS_CHANGED: "LLM_STATUS_CHANGED",
+
+
+
+
+
+
+
+
+
+
+
+      // service worker <-> sidepanel: 对话
+
+
+
+
+
+      CHAT_SEND: "CHAT_SEND",           // sidepanel -> SW: 发送用户消息
+
+
+
+
+
+      CHAT_CANCEL: "CHAT_CANCEL",       // sidepanel -> SW: 取消当前回合
+  RESTORE_HISTORY: "RESTORE_HISTORY", // sidepanel -> SW: 恢复会话历史
+
+
+
+
+
+      CHAT_EVENT: "CHAT_EVENT",         // SW -> sidepanel: 转发宿主事件
+
+
+
+
+
+      CHAT_TURN_END: "CHAT_TURN_END",   // SW -> sidepanel: 回合结束
+
+
+
+
+
+      CHAT_ERROR: "CHAT_ERROR",         // SW -> sidepanel: 错误
+
+
+
+
+
+
+
+
+
+
+
+      // 权限确认（宿主 -> SW -> sidepanel -> SW -> 宿主）
+
+
+
+
+
+      PERMISSION_REQUEST: "PERMISSION_REQUEST",
+
+
+
+
+
+      PERMISSION_RESPONSE: "PERMISSION_RESPONSE",
+
+
+
+
+
+
+
+
+
+
+
+      // ask_user（宿主 -> SW -> sidepanel -> SW -> 宿主）
+
+
+
+
+
+      ASK_USER_REQUEST: "ASK_USER_REQUEST",
+
+
+
+
+
+      ASK_USER_RESPONSE: "ASK_USER_RESPONSE",
+
+
+
+
+
+
+
+
+
+
+
+      // 浏览器工具（宿主 -> SW 直接执行 CDP -> SW -> 宿主，不经 sidepanel）
+
+
+
+
+
+      BROWSER_REQUEST: "BROWSER_REQUEST",
+
+
+
+
+
+
+
+
+
+
+
+      // 配置变更
+
+
+
+
+
+      CONFIG_UPDATED: "CONFIG_UPDATED",
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── 原生宿主消息类型（扩展 <-> 宿主，over Native Messaging）─────────
+
+
+
+
+
+    // 这些是 JSON 消息的 "type" 字段值，两侧必须一致。
+
+
+
+
+
+    host: {
+
+
+
+
+
+      // 扩展 -> 宿主
+
+
+
+
+
+      BINDING_HELLO: "binding_hello",
+
+
+
+
+
+      CHAT: "chat",                     // { prompt, sessionId, images?, attachments? }
+
+
+
+
+
+      CHAT_CANCEL: "chat_cancel",       // { sessionId }
+    RESTORE_HISTORY: "restore_history", // { sessionId, messages: [{role, content}] }
+
+
+
+
+
+      CONFIG: "config",                 // { provider, permissionMode, workingDirectory }
+
+
+
+
+
+      PERMISSION_RESPONSE: "permission_response",  // { requestId, allowed }
+
+
+
+
+
+      ASK_USER_RESPONSE: "ask_user_response",      // { requestId, answer }
+
+
+
+
+
+      BROWSER_RESPONSE: "browser_response",        // { requestId, response }
+
+
+
+
+
+      SHUTDOWN: "shutdown",
+
+
+
+
+
+
+
+
+
+
+
+      // 宿主 -> 扩展
+
+
+
+
+
+      READY: "ready",                   // 宿主启动完成
+
+
+
+
+
+      CHAT_EVENT: "chat_event",         // 转发 agentao AgentEvent
+
+
+
+
+
+      TURN_END: "turn_end",             // { sessionId, finalText, status, ... }
+
+
+
+
+
+      ERROR: "error",                   // { message, detail? }
+
+
+
+
+
+      PERMISSION_REQUEST: "permission_request",  // { requestId, toolName, description, args }
+
+
+
+
+
+      ASK_USER_REQUEST: "ask_user_request",      // { requestId, question, header?, options?, ... }
+
+
+
+
+
+      BROWSER_REQUEST: "browser_request",        // { requestId, action, params }
+
+
+
+
+
+      LOG: "log",                       // { level, message }
+    LLM_STATUS: "llm_status",     // { status: "ok"|"error", detail? }
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── agentao 事件类型（镜像 agentao.transport.events.EventType）──────
+
+
+
+
+
+    // 宿主把 AgentEvent.type 原样透传，扩展按这些值渲染。
+
+
+
+
+
+    agentEvents: {
+
+
+
+
+
+      TURN_START: "turn_start",
+
+
+
+
+
+      TURN_BEGIN: "turn_begin",
+
+
+
+
+
+      TURN_END: "turn_end",
+
+
+
+
+
+      TOOL_START: "tool_start",
+
+
+
+
+
+      TOOL_OUTPUT: "tool_output",
+
+
+
+
+
+      TOOL_COMPLETE: "tool_complete",
+
+
+
+
+
+      TOOL_RESULT: "tool_result",
+
+
+
+
+
+      THINKING: "thinking",
+
+
+
+
+
+      LLM_TEXT: "llm_text",
+
+
+
+
+
+      LLM_CALL_STARTED: "llm_call_started",
+
+
+
+
+
+      LLM_CALL_COMPLETED: "llm_call_completed",
+
+
+
+
+
+      ERROR: "error",
+
+
+
+
+
+      AGENT_START: "agent_start",
+
+
+
+
+
+      AGENT_END: "agent_end",
+
+
+
+
+
+      TOOL_CONFIRMATION: "tool_confirmation",
+
+
+
+
+
+      SKILL_ACTIVATED: "skill_activated",
+
+
+
+
+
+      SKILL_DEACTIVATED: "skill_deactivated",
+
+
+
+
+
+      MEMORY_WRITE: "memory_write",
+
+
+
+
+
+      MODEL_CHANGED: "model_changed",
+
+
+
+
+
+      PERMISSION_MODE_CHANGED: "permission_mode_changed",
+
+
+
+
+
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ── DOM id（sidepanel / options 内部）──────────────────────────────
+
+
+
+
+
+    dom: {
+
+
+
+
+
+      SIDEPANEL_ROOT: "agentao-root",
+
+
+
+
+
+      SIDEPANEL_MESSAGES: "agentao-messages",
+
+
+
+
+
+      SIDEPANEL_INPUT: "agentao-input",
+
+
+
+
+
+      SIDEPANEL_SEND_BUTTON: "agentao-send",
+
+
+
+
+
+      SIDEPANEL_STOP_BUTTON: "agentao-stop",
+
+
+
+
+
+      SIDEPANEL_STATUS: "agentao-status",
+
+
+
+
+
+      SIDEPANEL_PERMISSION_PROMPT: "agentao-permission-prompt",
+
+
+
+
+
+      SIDEPANEL_ASK_USER_PROMPT: "agentao-ask-user-prompt",
+
+
+
+      SIDEPANEL_ATTACH_BUTTON: "agentao-attach",
+
+
+
+      SIDEPANEL_FILE_INPUT: "agentao-file-input",
+
+
+
+      SIDEPANEL_ATTACHMENTS: "agentao-attachments",
+
+
+
+      OPTIONS_ROOT: "agentao-options-root",
+
+
+
+    },
+
+
+
+
+  };
+
+
+
+
+
+
+
+
+
+
+
+  globalThis.__AIC_CONTRACT__ = deepFreeze(contract);
+
+
+
+
+
+})();
+
+
+
+
+

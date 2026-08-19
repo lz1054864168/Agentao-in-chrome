@@ -157,8 +157,8 @@ class BrowserEvalTool(_BrowserToolBase):
         return (
             "Execute JavaScript in the active browser tab and return the result. "
             "Use this to read the DOM, extract text, query element attributes, "
-            "or run any page-side computation. The expression must return a "
-            "JSON-serializable value."
+            "or run any page-side computation. The expression must evaluate "
+            "to a JSON-serializable value."
         )
 
     @property
@@ -170,8 +170,11 @@ class BrowserEvalTool(_BrowserToolBase):
                     "type": "string",
                     "description": (
                         "JavaScript expression to evaluate in the page. "
-                        "Must return a value (use `return` in a function body "
-                        "or a bare expression)."
+                        "Must evaluate to a value — use a bare expression "
+                        "(e.g. document.title) or wrap multi-statement logic "
+                        "in an IIFE (e.g. (() => { ... return x; })()). "
+                        "Do NOT use a top-level return statement — it causes "
+                        "'Illegal return statement'."
                     ),
                 },
             },

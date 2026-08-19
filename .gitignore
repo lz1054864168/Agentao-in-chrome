@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -37,6 +37,11 @@ tests/scratch/
 native-host/_*.py
 native-host/agentao-chrome-host.bat
 native-host/err.log
+native-host/*.log
+
+# Misc local files
+list
+XQ.txt
 
 # Agentao runtime artifacts
 .agentao/
