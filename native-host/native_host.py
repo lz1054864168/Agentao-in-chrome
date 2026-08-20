@@ -52985,6 +52985,7 @@ class NativeHost:
 
         if msg_type == EXT_TO_HOST["restore_history"]:
             self._handle_restore_history(msg)
+            return
         if msg_type == EXT_TO_HOST["permission_response"]:
 
 
@@ -109948,6 +109949,29 @@ class NativeHost:
 
 
 
+    def _handle_restore_history(self, msg: Dict[str, Any]) -> None:
+        """Restore conversation history when switching sessions."""
+        with self._agent_lock:
+            agent = self._agent
+            if agent is None:
+                return
+            try:
+                agent.clear_history()
+                messages = msg.get("messages", [])
+                for m in messages:
+                    role = m.get("role", "user")
+                    content = m.get("content", "")
+                    if role in ("user", "assistant") and content:
+                        agent.add_message(role, content)
+                logging.info(
+                    "restored %d messages for session %s",
+                    len(messages),
+                    msg.get("sessionId", "unknown"),
+                )
+            except Exception as exc:
+                logging.warning("restore_history failed: %s", exc)
+
+
 def _parse_permission_mode(mode_str: str) -> PermissionMode:
 
 
@@ -141901,263 +141925,4 @@ if __name__ == "__main__":
 
 
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def _handle_restore_history(self, msg: Dict[str, Any]) -> None:
-        """Restore conversation history when switching sessions."""
-        with self._agent_lock:
-            agent = self._agent
-            if agent is None:
-                return
-            try:
-                agent.clear_history()
-                messages = msg.get("messages", [])
-                for m in messages:
-                    role = m.get("role", "user")
-                    content = m.get("content", "")
-                    if role in ("user", "assistant") and content:
-                        agent.add_message(role, content)
-                logging.info(
-                    "restored %d messages for session %s",
-                    len(messages),
-                    msg.get("sessionId", "unknown"),
-                )
-            except Exception as exc:
-                logging.warning("restore_history failed: %s", exc)
 
