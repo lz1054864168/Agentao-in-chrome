@@ -3,11 +3,8 @@
 <div align="center">
 
 ![Agentao in Chrome](https://img.shields.io/badge/Agentao-in%20Chrome-blue?style=for-the-badge)
-<<<<<<< HEAD
 ![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)
-=======
 ![Version](https://img.shields.io/badge/version-0.1.0-green?style=for-the-badge)
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 ![Platform](https://img.shields.io/badge/platform-Chrome%20116%2B-lightgrey?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
 
