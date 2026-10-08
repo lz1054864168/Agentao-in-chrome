@@ -1,0 +1,118 @@
+name: Release
+
+# Builds the native host into a standalone executable for Windows, macOS,
+# and Linux, then attaches the artifacts to a GitHub Release. The
+# extension source is also zipped so users can load it unpacked.
+#
+# Trigger: push a tag like `v0.1.0`.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-native-host:
+    name: Build native host (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: agentao-chrome-host-linux
+            archive: agentao-chrome-host-linux.tar.gz
+          - os: macos-latest
+            artifact: agentao-chrome-host-macos
+            archive: agentao-chrome-host-macos.tar.gz
+          - os: windows-latest
+            artifact: agentao-chrome-host-windows
+            archive: agentao-chrome-host-windows.zip
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install agentao + PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install "agentao>=0.4.18" "pyinstaller>=6.0"
+
+      - name: Build native host executable
+        run: python scripts/build_native_host.py --clean
+
+      - name: Rename output (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          mv Releases/dist/agentao-chrome-host Releases/dist/${{ matrix.artifact }}
+
+      - name: Zip (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          Compress-Archive -Path Releases/dist/agentao-chrome-host -DestinationPath Releases/dist/${{ matrix.archive }}
+
+      - name: Tar (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd Releases/dist && tar czf ${{ matrix.archive }} ${{ matrix.artifact }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: Releases/dist/${{ matrix.archive }}
+
+  build-extension:
+    name: Build extension zip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate icon
+        run: python scripts/generate_icon.py
+
+      - name: Zip extension
+        run: |
+          # Include only the files needed to load the extension unpacked.
+          # The extension/ directory contains manifest.json and all extension
+          # source files; zip its contents so the archive extracts to a
+          # loadable folder.
+          mkdir -p Releases/dist
+          cd extension && zip -r ../Releases/dist/agentao-in-chrome-extension.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension
+          path: Releases/dist/agentao-in-chrome-extension.zip
+
+  release:
+    name: Create release
+    needs: [build-native-host, build-extension]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/*/agentao-chrome-host-*
+            artifacts/extension/agentao-in-chrome-extension.zip
