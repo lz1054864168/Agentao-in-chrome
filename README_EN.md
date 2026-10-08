@@ -3,7 +3,11 @@
 <div align="center">
 
 ![Agentao in Chrome](https://img.shields.io/badge/Agentao-in%20Chrome-blue?style=for-the-badge)
+<<<<<<< HEAD
 ![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)
+=======
+![Version](https://img.shields.io/badge/version-0.1.0-green?style=for-the-badge)
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 ![Platform](https://img.shields.io/badge/platform-Chrome%20116%2B-lightgrey?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
 
@@ -46,7 +50,11 @@ The backend is powered by [agentao](https://github.com/jin-bo/agentao) and fully
 - **Tool confirmation**: Each time a sensitive tool is invoked, the sidebar shows a confirmation card with the tool name, description, and arguments — you decide Allow / Deny.
 - **Memory**: Persists key information across sessions.
 - **Skills**: An extensible site/task-specific guidance system — drop a `SKILL.md` to load it, no code changes needed. See the [Skills](#-skills) section below.
+<<<<<<< HEAD
 - **MCP (Model Context Protocol)**: Connect external MCP servers to extend tool capabilities. The settings page's **MCP Servers** section manages connections visually (add / edit / test / enable / trust), with config flowing `chrome.storage` → native host → `InMemoryMCPRegistry` into the runtime; file-based config (`~/.agentao/mcp.json` and `<workspace>/.agentao/mcp.json`) remains supported, with UI entries winning name collisions.
+=======
+- **MCP (Model Context Protocol)**: Connect external MCP servers to extend tool capabilities.
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 - **Sub-agents**: Delegate subtasks to independent agents.
 
 ### 🌐 Browser automation
@@ -95,6 +103,7 @@ Configured on the settings page; supports any OpenAI-compatible endpoint, with a
 
 ### 📦 Out-of-the-box packaged host
 
+<<<<<<< HEAD
 The native host is packaged with PyInstaller into a **standalone executable** that bundles the Agentao runtime (v3.0.0 ships with agentao **0.5.11**) and all dependencies, distributed together with the extension (`extension/native-host/`). Double-click install.bat — **no Python or agentao installation needed**.
 
 ### 🌐 Multi-browser support
@@ -102,6 +111,9 @@ The native host is packaged with PyInstaller into a **standalone executable** th
 Installing the native host (double-click install.bat or run `--install`) registers it with **every Chromium-family browser on the machine**: **Chrome / Edge / Brave / Chromium / Vivaldi**. Load the extension in any of them and start using it — the host is installed once.
 
 > Firefox / Safari are not supported yet: they lack the `chrome.sidePanel` / `chrome.debugger` APIs and use a different Native Messaging manifest format.
+=======
+The native host is packaged with PyInstaller into a **standalone executable** that bundles Agentao and all dependencies. Download it, run one install command — **no Python or agentao installation needed**.
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 ### 🔗 Native messaging bridge
 
@@ -160,7 +172,11 @@ The extension communicates with the local host process via Chrome Native Messagi
 **Design highlights:**
 
 1. **Extension frontend** references the `claw-in-chrome` shell pattern, but uses entirely readable source (no obfuscated bundles).
+<<<<<<< HEAD
 2. **Native host** is packaged with PyInstaller into a standalone executable that bundles agentao and all dependencies — no Python needed on the user's machine; the install script registers the host with every Chromium-family browser (Chrome / Edge / Brave / Chromium / Vivaldi).
+=======
+2. **Native host** is packaged with PyInstaller into a standalone executable that bundles agentao and all dependencies — no Python needed on the user's machine.
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 3. **Transport bridge**: A custom `AgentaoChromeTransport` implements agentao's `Transport` protocol, serializing runtime events to JSON written back to the extension, and routing the extension's permission confirmations / user answers back to the runtime.
 4. **Centralized contract**: All message types, storage keys, and field names are consolidated in `agentao-contract.js` (extension side) and `host_protocol.py` (host side) — mirrored on both sides.
 
@@ -170,6 +186,7 @@ For more detail see [docs/architecture.md](./docs/architecture.md).
 
 ## 🚀 Quick Start
 
+<<<<<<< HEAD
 ### Option A: Use the v3.0.0 all-in-one package (recommended)
 
 > **No Python or agentao installation needed** — the native host is packaged as a standalone executable and bundles the Agentao runtime (0.5.11).
@@ -207,6 +224,36 @@ Releases/extension/                 # ← this folder is both the extension and 
 #### Step 2: Install the native host
 
 Go into the host directory (Channel A: `Releases/extension/native-host/`; Channel B: the folder extracted from `agentao-chrome-host-windows.zip` — extract it to a **permanent location** such as `C:\agentao-chrome-host\`, since the browser launches the host from that path and it must not move afterwards) and double-click **install.bat** (Windows) / install.command (macOS) / install.sh (Linux), or run in a terminal:
+=======
+### Option A: Download the packaged executable (recommended)
+
+> **No Python or agentao installation needed** — the executable bundles the full runtime.
+
+#### Step 1: Download the native host
+
+Download the native host archive for your OS from [Releases](../../releases):
+
+| OS | File |
+|----|------|
+| Windows | `agentao-chrome-host-windows.zip` |
+| macOS | Coming soon |
+| Linux | Coming soon |
+
+> Only **Windows** is available for now; macOS / Linux builds are coming soon.
+
+Extract it to a **permanent location** (e.g. `~/agentao-chrome-host/` or `C:\agentao-chrome-host\`) — don't leave it in Downloads. Chrome launches it from this path, so the path must not change.
+
+#### Step 2: Load the extension
+
+1. Download `agentao-in-chrome-extension.zip` from the same Release and extract it to a folder.
+2. Open `chrome://extensions/` and enable **Developer mode** (top right).
+3. Click **Load unpacked** and select the extracted extension folder (the one containing `manifest.json`).
+4. The extension ID is fixed via the `key` field in `manifest.json` — no need to copy it manually; the host installer uses it automatically.
+
+#### Step 3: Install the native host
+
+Double-click `install.bat` (Windows) / `install.command` (macOS) / `install.sh` (Linux) in the host directory, or run in a terminal:
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 ```bash
 # macOS / Linux
@@ -216,7 +263,11 @@ Go into the host directory (Channel A: `Releases/extension/native-host/`; Channe
 agentao-chrome-host.exe --install
 ```
 
+<<<<<<< HEAD
 This writes the Native Messaging manifest and registers it with every Chromium-family browser on the machine (Chrome / Edge / Brave / Chromium / Vivaldi). On success you'll see something like:
+=======
+This writes the Native Messaging manifest and registers it with Chrome. On success you'll see something like:
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 ```
 ✓ Native Messaging host installed (macos)
@@ -224,9 +275,13 @@ This writes the Native Messaging manifest and registers it with every Chromium-f
   host:     /Users/you/agentao-chrome-host/agentao-chrome-host
 ```
 
+<<<<<<< HEAD
 > For install details and FAQ see the bundled [extension/安装说明.md](./extension/安装说明.md).
 
 #### Step 3: Configure your model provider
+=======
+#### Step 4: Configure your model provider
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 1. Right-click the Agentao icon → **Options** to open the settings page.
 2. Fill in the **Model Provider** section:
@@ -238,7 +293,11 @@ This writes the Native Messaging manifest and registers it with every Chromium-f
    - Enable `Vision` and adjust `Temperature` / `Max Tokens` as needed
 3. Click **Save**.
 
+<<<<<<< HEAD
 #### Step 4: Start chatting
+=======
+#### Step 5: Start chatting
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 Open the sidebar (`Ctrl+E` or click the toolbar icon). The status indicator turns green (Connected) when the host is connected. Type a message in the input box and press Enter to send.
 
@@ -264,8 +323,11 @@ python scripts/build_native_host.py --clean
 # Output in Releases/dist/agentao-chrome-host/
 ```
 
+<<<<<<< HEAD
 > The build script excludes heavyweight ML packages (torch / transformers / etc.) that the native host never uses — their deeply nested license trees can hit the Windows MAX_PATH limit during the freeze. The output is roughly 200 MB.
 
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 ### Runtime configuration
 
 On the settings page, the **Runtime** section also lets you configure:
@@ -318,6 +380,11 @@ In source mode, skills go in the repository's `native-host/skills/` directory. T
 agentao-in-chrome/
 └── native-host/
     └── skills/              # ← source-mode skills directory
+<<<<<<< HEAD
+=======
+        ├── form-fill-9902/  #   bundled: 9902 form-filling guide
+        │   └── SKILL.md
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
         └── my-skill/        #   your new skill
             └── SKILL.md
 ```
@@ -379,7 +446,10 @@ agentao-in-chrome/
 │   ├── theme-init.js              # Theme initialization
 │   ├── i18n-runtime.js            # Runtime i18n
 │   ├── icon-128.png / icon.svg    # Extension icons
+<<<<<<< HEAD
 │   ├── 安装说明.md                # Release install guide (shipped since v3.0.0)
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 │   └── _locales/                  # i18n resources (en / zh-CN)
 ├── native-host/                   # Native messaging host (Python)
 │   ├── native_host.py             # Host entry (read/write loop + --install mode)
@@ -392,10 +462,15 @@ agentao-in-chrome/
 │   ├── pyproject.toml             # Python project metadata
 │   └── README.md
 ├── scripts/
+<<<<<<< HEAD
 │   ├── build_native_host.py       # PyInstaller build script (excludes ML packages)
 │   ├── pack-release-windows.ps1   # Windows release zip packaging
 │   ├── install_native_host.py     # Source-mode install script
 │   ├── fix_mojibake.py            # Source mojibake repair tool
+=======
+│   ├── build_native_host.py       # PyInstaller build script
+│   ├── install_native_host.py     # Source-mode install script
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 │   ├── generate_icon.py           # Icon generation
 │   ├── generate_extension_key.py  # Extension key generation
 │   ├── compute_extension_id.py    # Extension ID computation
@@ -405,7 +480,11 @@ agentao-in-chrome/
 │   ├── architecture.md            # Architecture notes
 │   ├── message-protocol.md        # Message protocol index
 │   └── native-host-setup.md       # Host setup guide
+<<<<<<< HEAD
 ├── Releases/                     # Local build output (gitignored; dist/ host build + extension/ out-of-the-box snapshot for distribution)
+=======
+├── Releases/                     # Local build output (gitignored; dist/ + extension/ copies for distribution)
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 └── tests/
     ├── run-all-tests.js
     ├── run-suite.js

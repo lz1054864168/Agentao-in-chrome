@@ -3,7 +3,11 @@
   "minimum_chrome_version": "116",
   "name": "Agentao in Chrome",
   "short_name": "Agentao",
+<<<<<<< HEAD
   "version": "3.0.0",
+=======
+  "version": "0.1.0",
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
   "description": "Put the Agentao governed agent runtime into the Chrome sidebar.",
   "default_locale": "en",
   "action": {

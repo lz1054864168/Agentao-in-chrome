@@ -1,11 +1,21 @@
 """Mirror of agentao-contract.js on the host side.
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 Every message type, field name, and storage key that crosses the
 
 Native Messaging boundary is defined here and in ``agentao-contract.js``.
 
 The two must stay in sync — when you change one, change the other.
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 The extension sends and receives JSON messages over Chrome Native
 
 Messaging (stdin/stdout, 4-byte little-endian length prefix). Each
@@ -14,8 +24,17 @@ message is an object with a ``type`` field drawn from ``HOST_MESSAGES``.
 
 """
 
+<<<<<<< HEAD
 from __future__ import annotations
 
+=======
+
+
+from __future__ import annotations
+
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 # ── Native Messaging host name ────────────────────────────────────────
 
 # Must match contract.nativeMessaging.HOST_NAME in agentao-contract.js
@@ -24,6 +43,11 @@ from __future__ import annotations
 
 HOST_NAME = "com.agentao.chrome_extension"
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 # ── Message types: extension -> host ──────────────────────────────────
 EXT_TO_HOST = {
     "binding_hello": "binding_hello",
@@ -34,7 +58,10 @@ EXT_TO_HOST = {
     "permission_response": "permission_response",
     "ask_user_response": "ask_user_response",
     "browser_response": "browser_response",
+<<<<<<< HEAD
     "mcp_test": "mcp_test",
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
     "shutdown": "shutdown",
 }
 
@@ -49,6 +76,7 @@ HOST_TO_EXT = {
     "browser_request": "browser_request",
     "log": "log",
     "llm_status": "llm_status",
+<<<<<<< HEAD
     "mcp_test_result": "mcp_test_result",
     "mcp_status": "mcp_status",
 }
@@ -93,6 +121,11 @@ MCP_TYPES = {
     "STDIO": "stdio",
 
 }
+=======
+}
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 # ── Provider config field names (mirror contract.provider.FIELDS) ─────
 
@@ -120,6 +153,11 @@ PROVIDER_FIELDS = {
 
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 # ── Permission modes (mirror contract.permission.MODES) ───────────────
 
 PERMISSION_MODES = {
@@ -134,10 +172,22 @@ PERMISSION_MODES = {
 
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 # ── Log levels ────────────────────────────────────────────────────────
 
 LOG_LEVELS = ("debug", "info", "warn", "error")
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 __all__ = [
 
     "HOST_NAME",
@@ -150,10 +200,13 @@ __all__ = [
 
     "PERMISSION_MODES",
 
+<<<<<<< HEAD
     "MCP_FIELDS",
 
     "MCP_TYPES",
 
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
     "LOG_LEVELS",
 
 ]

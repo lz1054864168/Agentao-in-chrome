@@ -19,6 +19,10 @@ from typing import Any, Dict, Optional
 
 from agentao.tools.base import Tool
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def _set_transport(tool: "_BrowserToolBase", transport: Any) -> None:
     """Bind the transport onto a browser tool instance.
 
@@ -29,6 +33,10 @@ def _set_transport(tool: "_BrowserToolBase", transport: Any) -> None:
     """
     tool._transport = transport  # type: ignore[attr-defined]
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class _BrowserToolBase(Tool):
     """Shared base: holds the transport reference and runs the round-trip."""
 
@@ -54,6 +62,10 @@ class _BrowserToolBase(Tool):
             return data
         return _to_compact_json(data)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def _to_compact_json(value: Any, max_len: int = 8000) -> str:
     import json
 
@@ -65,6 +77,10 @@ def _to_compact_json(value: Any, max_len: int = 8000) -> str:
         s = s[:max_len] + f"\n... ({len(s) - max_len} more chars)"
     return s
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class BrowserNavigateTool(_BrowserToolBase):
     """Navigate the active tab to a URL."""
 
@@ -102,6 +118,10 @@ class BrowserNavigateTool(_BrowserToolBase):
             return "ERROR: url is required"
         return self._call("navigate", {"url": url})
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class BrowserScreenshotTool(_BrowserToolBase):
     """Capture a screenshot of the active tab."""
 
@@ -139,6 +159,10 @@ class BrowserScreenshotTool(_BrowserToolBase):
         fmt = kwargs.get("format", "png")
         return self._call("screenshot", {"format": fmt})
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class BrowserEvalTool(_BrowserToolBase):
     """Execute JavaScript in the active tab and return the result."""
 
@@ -187,6 +211,10 @@ class BrowserEvalTool(_BrowserToolBase):
             return "ERROR: expression is required"
         return self._call("eval", {"expression": expr})
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class BrowserClickTool(_BrowserToolBase):
     """Click an element in the active tab by CSS selector."""
 
@@ -224,6 +252,10 @@ class BrowserClickTool(_BrowserToolBase):
             return "ERROR: selector is required"
         return self._call("click", {"selector": selector})
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def all_browser_tools() -> list:
     """Return fresh instances of all browser tools."""
     return [
@@ -233,6 +265,10 @@ def all_browser_tools() -> list:
         BrowserClickTool(),
     ]
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 __all__ = [
     "BrowserNavigateTool",
     "BrowserScreenshotTool",
@@ -241,4 +277,7 @@ __all__ = [
     "all_browser_tools",
     "_set_transport",
 ]
+<<<<<<< HEAD
 
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a

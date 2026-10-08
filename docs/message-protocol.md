@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Message Protocol Index
+=======
+﻿# Message Protocol Index
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 This document indexes every message that crosses a boundary in the
 project. The canonical source for constants is
@@ -79,12 +83,19 @@ Native Messaging (stdin/stdout, 4-byte little-endian length prefix).
 | `type` | Payload | Notes |
 |--------|---------|-------|
 | `binding_hello` | `{ protocolVersion, browser, extensionId, extensionVersion, hostName, instanceId }` | Sent automatically on `connectNative` by `native-host-binding.js` |
+<<<<<<< HEAD
 | `config` | `{ provider, permissionMode, workingDirectory, mcpServers? }` | Rebuilds the agent; `mcpServers` is the UI-managed MCP server list (optional, absent for older extensions) |
+=======
+| `config` | `{ provider, permissionMode, workingDirectory }` | Rebuilds the agent |
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 | `chat` | `{ sessionId, prompt, images? }` | Starts a turn on a worker thread |
 | `chat_cancel` | `{ sessionId }` | Trips the `CancellationToken` |
 | `permission_response` | `{ requestId, allowed }` | Resolves a pending `confirm_tool` |
 | `ask_user_response` | `{ requestId, answer }` | Resolves a pending `ask_user` |
+<<<<<<< HEAD
 | `mcp_test` | `{ requestId, server }` | Probe one MCP server entry: full handshake + list_tools via agentao's `McpClientManager`; answer is `mcp_test_result` |
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 | `shutdown` | `{}` | Clean exit |
 
 ### Host → extension
@@ -97,8 +108,11 @@ Native Messaging (stdin/stdout, 4-byte little-endian length prefix).
 | `error` | `{ message, detail?, sessionId? }` | Error |
 | `permission_request` | `{ requestId, toolName, description, args }` | Needs user confirmation |
 | `ask_user_request` | `{ requestId, question, header?, options?, multiple?, allowCustom? }` | Needs user input |
+<<<<<<< HEAD
 | `mcp_test_result` | `{ requestId, ok, tools?, error? }` | Result of an `mcp_test` probe; `tools` lists discovered tool names |
 | `mcp_status` | `{ servers }` | Sent after every agent rebuild; `servers` is `[{ name, status, tools, trusted }]` reflecting the live MCP connections |
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 | `log` | `{ level, message }` | Host-side log (for debugging) |
 
 ---
@@ -141,7 +155,10 @@ These are the `AgentEvent.type` values that agentao emits (see
 | `agentaoProviderActiveProfileId` | provider | Active profile ID |
 | `agentaoPermissionMode` | permission | `read-only` / `workspace-write` / `full-access` / `plan` |
 | `agentaoAutoApproveTools` | permission | Boolean |
+<<<<<<< HEAD
 | `agentaoMcpServers` | mcp | Array of UI-managed MCP server entries (`contract.mcp.FIELDS`: name/type/url/headers/command/args/env/timeout/trust/enabled) |
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 | `agentaoActiveSessionId` | session | Current session ID |
 | `agentaoWorkingDirectory` | session | Host workspace path |
 | `agentao.session.history.<sessionId>` | session | Per-session message history |

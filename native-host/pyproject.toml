@@ -1,6 +1,10 @@
 [project]
 name = "agentao-chrome-host"
+<<<<<<< HEAD
 version = "3.0.0"
+=======
+version = "0.1.0"
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 description = "Chrome Native Messaging host that embeds the Agentao runtime."
 requires-python = ">=3.10"
 license = {text = "MIT"}

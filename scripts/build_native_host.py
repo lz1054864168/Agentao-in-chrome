@@ -35,6 +35,10 @@ DIST_DIR = PROJECT_ROOT / "Releases" / "dist"
 BUILD_DIR = PROJECT_ROOT / "build"
 APP_NAME = "agentao-chrome-host"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def ensure_pyinstaller() -> None:
     """Ensure PyInstaller is installed; install if missing."""
     try:
@@ -46,6 +50,10 @@ def ensure_pyinstaller() -> None:
             stdout=subprocess.DEVNULL,
         )
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def build(clean: bool, onefile: bool) -> Path:
     """Run PyInstaller and return the output directory/file path."""
     if clean:
@@ -99,6 +107,7 @@ def build(clean: bool, onefile: bool) -> Path:
         "agentao.mcp",
         "--hidden-import",
         "agentao.plugins",
+<<<<<<< HEAD
         # Exclude heavyweight ML / visualization packages the host never
         # uses. agentao itself has zero imports of these; they only enter
         # the analysis when a co-installed user site-packages makes them
@@ -139,6 +148,8 @@ def build(clean: bool, onefile: bool) -> Path:
         "networkx",
         "--exclude-module",
         "matplotlib",
+=======
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
         # The host's sibling modules must be on the path.
         "--paths",
         str(HOST_DIR),
@@ -166,6 +177,10 @@ def build(clean: bool, onefile: bool) -> Path:
 
     return output
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def _copy_install_script(output_dir: Path) -> None:
     """Copy the platform-appropriate install script into the dist folder."""
     if sys.platform.startswith("win"):
@@ -189,6 +204,7 @@ def _copy_install_script(output_dir: Path) -> None:
     else:
         print(f"WARNING: install script not found: {src}")
 
+<<<<<<< HEAD
 def main() -> int:
     # Windows consoles often default to a legacy code page (e.g. GBK) that
     # cannot encode the check-mark used in the summary output below.
@@ -196,6 +212,10 @@ def main() -> int:
     # crashes after a successful freeze.
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+=======
+
+def main() -> int:
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
     parser = argparse.ArgumentParser(
         description="Build the Agentao Chrome native host executable."
     )
@@ -223,6 +243,12 @@ def main() -> int:
     print("(onedir) or ship the single executable (onefile).")
     return 0
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     sys.exit(main())
 
+=======
+
+if __name__ == "__main__":
+    sys.exit(main())
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a

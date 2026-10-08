@@ -42,6 +42,10 @@ from agentao.transport.events import AgentEvent
 
 from host_protocol import HOST_TO_EXT
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class AgentaoChromeTransport(NullTransport):
     """Transport that forwards agentao events to the Chrome extension.
 
@@ -239,8 +243,15 @@ class AgentaoChromeTransport(NullTransport):
         if pending is not None:
             pending.set_result(response)
 
+<<<<<<< HEAD
 T = TypeVar("T")
 
+=======
+
+T = TypeVar("T")
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 class _PendingRequest(Generic[T]):
     """A one-shot result box with a timeout-aware wait."""
 
@@ -261,9 +272,17 @@ class _PendingRequest(Generic[T]):
             return self._result
         return None
 
+<<<<<<< HEAD
 def _new_request_id() -> str:
     return uuid.uuid4().hex
 
+=======
+
+def _new_request_id() -> str:
+    return uuid.uuid4().hex
+
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def _is_subsequence(needle: str, haystack: str) -> bool:
     """True when every char of needle appears in haystack in order.
 
@@ -278,6 +297,10 @@ def _is_subsequence(needle: str, haystack: str) -> bool:
     it = iter(h)
     return all(ch in it for ch in n)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def _event_to_dict(event: AgentEvent) -> Dict[str, Any]:
     """Serialize an AgentEvent to a JSON-safe dict for the extension."""
     try:
@@ -285,6 +308,10 @@ def _event_to_dict(event: AgentEvent) -> Dict[str, Any]:
     except Exception:
         return {"type": str(getattr(event, "type", "unknown")), "data": {}}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 def _safe_args(args: Any) -> Any:
     """Best-effort conversion of tool args to a JSON-serializable shape."""
     if args is None:
@@ -301,5 +328,10 @@ def _safe_args(args: Any) -> Any:
         pass
     return {"value": str(args)}
 
+<<<<<<< HEAD
 __all__ = ["AgentaoChromeTransport"]
 
+=======
+
+__all__ = ["AgentaoChromeTransport"]
+>>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
