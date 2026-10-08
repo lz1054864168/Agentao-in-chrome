@@ -4,7 +4,6 @@
 
 ![Agentao in Chrome](https://img.shields.io/badge/Agentao-in%20Chrome-blue?style=for-the-badge)
 ![Version](https://img.shields.io/badge/version-3.0.0-green?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-0.1.0-green?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-Chrome%20116%2B-lightgrey?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
 
@@ -47,11 +46,7 @@
 - **工具确认机制**：每次调用敏感工具时，侧边栏弹出确认卡片，展示工具名、描述与参数，由你决定 Allow / Deny。
 - **记忆（Memory）**：跨会话持久化关键信息。
 - **技能（Skills）**：可扩展的站点/任务专属指引系统，放置 `SKILL.md` 即可加载，无需改代码。详见下方[技能（Skills）](#-技能skills)小节。
-<<<<<<< HEAD
 - **MCP（Model Context Protocol）**：接入外部 MCP 服务器扩展工具能力。在设置页的 **MCP 服务器** 区可视化管理连接（新增 / 编辑 / 测试 / 启停 / 信任开关），配置经 `chrome.storage` → 原生宿主 → `InMemoryMCPRegistry` 注入运行时；同时兼容文件配置（`~/.agentao/mcp.json` 与 `<工作区>/.agentao/mcp.json`，UI 同名条目优先）。
-=======
-- **MCP（Model Context Protocol）**：接入外部 MCP 服务器扩展工具能力。
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 - **子智能体（Sub-agents）**：委派子任务给独立智能体。
 
 ### 🌐 浏览器自动化
@@ -100,7 +95,6 @@
 
 ### 📦 开箱即用的打包宿主
 
-<<<<<<< HEAD
 原生宿主已用 PyInstaller 打包成**独立可执行文件**，内置 Agentao 运行时（v3.0.0 包内置 agentao **0.5.11**）及全部依赖，并随扩展一同分发（`extension/native-host/`）。下载后双击 install.bat 即可，**无需安装 Python 或 agentao**。
 
 ### 🌐 多浏览器支持
@@ -108,9 +102,6 @@
 原生宿主安装时（双击 install.bat 或运行 `--install`）自动注册到本机**所有 Chromium 系浏览器**：**Chrome / Edge / Brave / Chromium / Vivaldi**。任一浏览器加载本扩展即可使用，宿主只装一次。
 
 > Firefox / Safari 暂不支持：缺少 `chrome.sidePanel` / `chrome.debugger` 等 API，且 Native Messaging 清单格式不同。
-=======
-原生宿主已用 PyInstaller 打包成**独立可执行文件**，内置 Agentao 及全部依赖。下载后运行一条安装命令即可，**无需安装 Python 或 agentao**。
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 ### 🔗 原生消息桥接
 
@@ -169,11 +160,7 @@
 **设计要点：**
 
 1. **扩展前端**参考 `claw-in-chrome` 的壳层结构，但全部使用可读源码（无混淆 bundle）。
-<<<<<<< HEAD
 2. **原生宿主**用 PyInstaller 打包成独立可执行文件，内置 agentao 及全部依赖，用户机器无需装 Python；安装脚本会把宿主注册到本机所有 Chromium 系浏览器（Chrome / Edge / Brave / Chromium / Vivaldi）。
-=======
-2. **原生宿主**用 PyInstaller 打包成独立可执行文件，内置 agentao 及全部依赖，用户机器无需装 Python。
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 3. **Transport 桥接**：自定义 `AgentaoChromeTransport` 实现 agentao 的 `Transport` 协议，把运行时事件序列化为 JSON 写回扩展，把扩展的权限确认 / 用户回答回包路由回运行时。
 4. **契约中心化**：所有消息类型、storage key、字段名统一收口在 `agentao-contract.js`（扩展侧）与 `host_protocol.py`（宿主侧），两侧镜像。
 
@@ -183,7 +170,6 @@
 
 ## 🚀 快速开始
 
-<<<<<<< HEAD
 ### 方式一：使用 v3.0.0 开箱即用包（推荐）
 
 > 全程**无需安装 Python 或 agentao**——原生宿主已打包为独立可执行文件，内置 Agentao 运行时（0.5.11）。
@@ -221,36 +207,6 @@ Releases/extension/                 # ← 整个文件夹既是扩展，也是�
 #### 第 2 步：安装原生宿主
 
 进入宿主所在目录（渠道 A：`Releases/extension/native-host/`；渠道 B：`agentao-chrome-host-windows.zip` 解压出的目录，建议解压到**固定路径**如 `C:\agentao-chrome-host\`——浏览器会从该路径启动宿主，之后不能移动），双击 **install.bat**（Windows）/ install.command（macOS）/ install.sh（Linux），或在终端运行：
-=======
-### 方式一：下载打包好的可执行文件（推荐）
-
-> 全程**无需安装 Python 或 agentao**——可执行文件已内置完整运行时。
-
-#### 第 1 步：下载原生宿主
-
-从 [Releases](../../releases) 下载你系统的原生宿主压缩包：
-
-| 系统 | 文件 |
-|------|------|
-| Windows | `agentao-chrome-host-windows.zip` |
-| macOS | 待发布 |
-| Linux | 待发布 |
-
-> 目前仅提供 **Windows** 版本，macOS / Linux 版本待发布。
-
-解压到一个**固定目录**（如 `~/agentao-chrome-host/` 或 `C:\agentao-chrome-host\`），不要放在下载文件夹——Chrome 会从该路径启动它，路径不能变。
-
-#### 第 2 步：加载扩展
-
-1. 从同一个 Release 下载 `agentao-in-chrome-extension.zip`，解压到一个文件夹。
-2. 打开 `chrome://extensions/`，开启右上角**开发者模式**。
-3. 点击**加载已解压的扩展程序**，选择解压出的扩展文件夹（包含 manifest.json 的目录）。
-4. 扩展 ID 已通过 manifest.json 中的 key 字段固定，无需手动复制——安装宿主时会自动使用。
-
-#### 第 3 步：安装原生宿主
-
-在宿主解压目录双击 install.bat（Windows）/ install.command（macOS）/ install.sh（Linux），或在终端运行：
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 ```bash
 # macOS / Linux
@@ -260,11 +216,7 @@ Releases/extension/                 # ← 整个文件夹既是扩展，也是�
 agentao-chrome-host.exe --install
 ```
 
-<<<<<<< HEAD
 该命令会写入 Native Messaging 清单，并注册到本机所有的 Chromium 系浏览器（Chrome / Edge / Brave / Chromium / Vivaldi）。成功时输出类似：
-=======
-该命令会写入 Native Messaging 清单并注册到 Chrome。成功时输出类似：
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 ```
 ✓ Native Messaging host installed (macos)
@@ -272,13 +224,9 @@ agentao-chrome-host.exe --install
   host:     /Users/you/agentao-chrome-host/agentao-chrome-host
 ```
 
-<<<<<<< HEAD
 > 安装细节与常见问题见发布包内的 [extension/安装说明.md](./extension/安装说明.md)。
 
 #### 第 3 步：配置模型供应商
-=======
-#### 第 4 步：配置模型供应商
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 1. 右键 Agentao 图标 → **选项**，打开设置页。
 2. 在 **Model Provider** 区填写：
@@ -290,11 +238,7 @@ agentao-chrome-host.exe --install
    - 按需开启 `Vision`、调整 `Temperature` / `Max Tokens`
 3. 点击 **Save**。
 
-<<<<<<< HEAD
 #### 第 4 步：开始对话
-=======
-#### 第 5 步：开始对话
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 
 打开侧边栏（`Ctrl+E` 或点击工具栏图标），状态指示灯变绿（Connected）即表示宿主已连接。在输入框输入消息，回车发送。
 
@@ -320,11 +264,8 @@ python scripts/build_native_host.py --clean
 # 产物在 Releases/dist/agentao-chrome-host/
 ```
 
-<<<<<<< HEAD
 > 构建脚本已排除 torch / transformers 等 ML 大件依赖（原生宿主用不到，且其深层许可证路径会触发 Windows MAX_PATH 限制），产物体积约 200 MB。
 
-=======
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 ### 配置运行时
 
 在设置页的 **Runtime** 区还可配置：
@@ -377,11 +318,6 @@ when_to_use: 用户提到什么关键词时使用此技能
 agentao-in-chrome/
 └── native-host/
     └── skills/              # ← 源码版技能目录
-<<<<<<< HEAD
-=======
-        ├── form-fill-9902/  #   已内置：9902 网点表单填报指引
-        │   └── SKILL.md
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
         └── my-skill/        #   你新增的技能
             └── SKILL.md
 ```
@@ -443,10 +379,7 @@ agentao-in-chrome/
 │   ├── theme-init.js              # 主题初始化
 │   ├── i18n-runtime.js            # 运行时国际化
 │   ├── icon-128.png / icon.svg    # 扩展图标
-<<<<<<< HEAD
 │   ├── 安装说明.md                # 发布包安装指南（v3.0.0 起随包分发）
-=======
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 │   └── _locales/                  # 多语言资源（en / zh-CN）
 ├── native-host/                   # 原生消息宿主（Python）
 │   ├── native_host.py             # 宿主入口（读写循环 + --install 模式）
@@ -459,15 +392,10 @@ agentao-in-chrome/
 │   ├── pyproject.toml             # Python 项目元数据
 │   └── README.md
 ├── scripts/
-<<<<<<< HEAD
 │   ├── build_native_host.py       # PyInstaller 打包脚本（排除 ML 大件依赖）
 │   ├── pack-release-windows.ps1   # Windows 发行 zip 打包
 │   ├── install_native_host.py     # 源码模式安装脚本
 │   ├── fix_mojibake.py            # 源码乱码修复工具
-=======
-│   ├── build_native_host.py       # PyInstaller 打包脚本
-│   ├── install_native_host.py     # 源码模式安装脚本
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 │   ├── generate_icon.py           # 图标生成
 │   ├── generate_extension_key.py  # 扩展密钥生成
 │   ├── compute_extension_id.py    # 扩展 ID 计算
@@ -477,11 +405,7 @@ agentao-in-chrome/
 │   ├── architecture.md            # 架构说明
 │   ├── message-protocol.md        # 消息协议索引
 │   └── native-host-setup.md       # 宿主安装指南
-<<<<<<< HEAD
 ├── Releases/                     # 本地打包产物（gitignore；dist/ 宿主构建 + extension/ 开箱即用快照，用于分发，不上传源码库）
-=======
-├── Releases/                     # 本地打包产物（gitignore；含 dist/ 与 extension/ 副本，用于分发）
->>>>>>> b97cb58fcb1fbbe6434a08d1a4d93c9a2f3ee72a
 └── tests/
     ├── run-all-tests.js
     ├── run-suite.js
